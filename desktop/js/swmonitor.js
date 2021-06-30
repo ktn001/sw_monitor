@@ -15,6 +15,31 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
+$('#bt_linkEqLogic').off('click').on('click',function () {
+  jeedom.eqLogic.getSelectModal({}, function (result) {
+    $.ajax({
+      type: "POST",
+      url : "plugins/swmonitor/core/ajax/swmonitor.ajax.php",
+      data : {
+        action : "linkProposition",
+	eqLogicId : result.id,
+	id : $('.eqLogicAttr[data-l1key=id]').value()
+      },
+      dataType : 'json',
+      global : false,
+      error : function (request, status, error) {
+        handleAjaxError (request, status, error);
+      },
+      success : function(data) {
+        if (data.state != 'ok') {
+	  $('#div_alert').showAlert({message: data.result, level: 'danger'});
+	  return;
+        }
+        $('.eqLogicsDSisplayCard[data-eqLogic_id='+$('.eqLogicAttr[data-l1key=id]').value()+']').click();
+      }
+    });
+  });
+});
 
 /*
 * Permet la réorganisation des commandes dans l'équipement

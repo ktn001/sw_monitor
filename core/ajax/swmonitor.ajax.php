@@ -17,24 +17,66 @@
  */
 
 try {
-    require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-    include_file('core', 'authentification', 'php');
+	require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
+	include_file('core', 'authentification', 'php');
 
-    if (!isConnect('admin')) {
-        throw new Exception(__('401 - Accès non autorisé', __FILE__));
-    }
-    
-  /* Fonction permettant l'envoi de l'entête 'Content-Type: application/json'
-    En V3 : indiquer l'argument 'true' pour contrôler le token d'accès Jeedom
-    En V4 : autoriser l'exécution d'une méthode 'action' en GET en indiquant le(s) nom(s) de(s) action(s) dans un tableau en argument
-  */  
-    ajax::init();
+	if (!isConnect('admin')) {
+		throw new Exception(__('401 - Accès non autorisé', __FILE__));
+	}
 
+	if (init('action') == 'linkProposition') {
 
+		$eqLogicId = init('eqLogicId');
+		if ($eqLogicId == ""){
+			throw new Exception(__("Id le l'équipement à lier non défini",__FILE__));
+		}
 
-    throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
-    /*     * *********Catch exeption*************** */
+		$id = init("id");
+		if ($id == "") {
+			throw new Exception(__("ID non défini",__FILE__));
+		}
+		$swmonitor = swmonitor::byid($id);
+		if (!is_object($swmonitor)) {
+			throw new Exception(__("Pas de swmonitor trouvé avec ID : ",__FILE__) . $id);
+		}
+		if ($swmonitor->getEqType_name() != "swmonitor") {
+			throw new Exception(__("Function appelée pour un eqLogic qui n'est pas de type swmonitor mais ",__FILE__) . $swmonitor->getEqType_name());
+		}
+
+		$return = array();
+		$eqLogicCmds = cmd::byEqLogicId($eqLogicId);
+		foreach ($eqLogicCmds as $eqLogicCmd) {
+			$return["proposition"][] = array ("id"      => $eqLogicCmd->getId(),
+							  "type"    => $eqLogicCmd->getType(),
+							  "subType" => $eqLogicCmd->getsubType(),
+							  "nom"     => $eqLogicCmd->getName());
+		}
+		$swmonitorCmds = cmd::byEqLogicId($id);
+		foreach ($swmonitorCmds as $swmonitorCmd) {
+			$return["actuel"][$swmonitorCmd->getType()][] = array("id" => $swmonitorCmd->getId(), "nom" => $swmonitorCmd->getName());
+		}
+		ajax::success($return);
+	}
+
+	if (init('action') == 'linkEqLogic') {
+		$id = init("id");
+		if ($id == "") {
+			throw new Exception(__("ID non défini",__FILE__));
+		}
+		$swmonitor = swmonitor::byid($id);
+		if (!is_object($swmonitor)) {
+			throw new Exception(__("Pas de swmonitor trouvé avec ID : ",__FILE__) . $id);
+		}
+		if ($swmonitor->getEqType_name() != "swmonitor") {
+			throw new Exception(__("Function appelée pour un eqLogic qui n'est pas de type swmonitor mais ",__FILE__) . $swmonitor->getEqType_name());
+		}
+		$swmonitor->linkEqLogic(init ('eqLogicId'));
+		ajax::success();
+	}
+
+	throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
+	/*     * *********Catch exeption*************** */
 } catch (Exception $e) {
-    ajax::error(displayException($e), $e->getCode());
+	ajax::error(displayException($e), $e->getCode());
 }
 
