@@ -3,7 +3,7 @@ if (!isConnect('admin')) {
 	throw new Exception('{{401 - Accès non autorisé}}');
 }
 // Déclaration des variables obligatoires
-$plugin = plugin::byId('swmonitor');
+$plugin = plugin::byId('swassist');
 sendVarToJS('eqType', $plugin->getId());
 $eqLogics = eqLogic::byType($plugin->getId());
 ?>
@@ -168,18 +168,22 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
 			<!-- Onglet des commandes de l'équipement -->
 			<div role="tabpanel" class="tab-pane" id="commandtab">
-				<a class="btn btn-default btn-sm pull-right cmdAction" data-action="add" style="margin-top:5px;"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
+				<div class="input-group pull-right" style="display:inline-flex">
+					<a class="btn btn-default btn-sm cmdAction roundedLeft" id="bt_addSwmInfo"><i class="fas fa-plus-circle"></i> {{Ajouter une info}}</a>
+					<a class="btn btn-default btn-sm cmdAction roundedRight" id="bt_addSwmAction"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
+				</div>
 				<br/><br/>
 				<div class="table-responsive">
 					<table id="table_cmd" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
-								<th>{{Id}}</th>
-								<th>{{Nom}}</th>
-								<th>{{Type}}</th>
-								<th>{{Options}}</th>
+								<th style="width: 50px;"> ID</th>
+								<th style="width: 230px;">{{Nom}}</th>
+								<th style="width: 110px;">{{Sous-Type}}</th>
+								<th>{{Valeur}}</th>
 								<th>{{Paramètres}}</th>
-								<th>{{Action}}</th>
+								<th style="width: 300px;">{{Options}}</th>
+								<th style="width: 150px;"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -193,6 +197,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 </div><!-- /.row row-overflow -->
 
 <!-- Inclusion du fichier javascript du plugin (dossier, nom_du_fichier, extension_du_fichier, id_du_plugin) -->
-<?php include_file('desktop', 'swmonitor', 'js', 'swmonitor');?>
+<?php include_file('desktop', 'swassist', 'js', 'swassist');?>
 <!-- Inclusion du fichier javascript du core - NE PAS MODIFIER NI SUPPRIMER -->
 <?php include_file('core', 'plugin.template', 'js');?>

@@ -1,13 +1,13 @@
 {
-	"id" : "swmonitor",
-	"name" : "switch moniteur",
+	"id" : "swassist",
+	"name" : "switch assistant",
 	"description" : {
-		"fr_FR": "Plugin pourmonitorer le fonctionnement des interrupeur"
+		"fr_FR": "Plugin pour assister le fonctionnement des interrupteurs"
 	},
 	"licence" : "AGPL",
 	"author" : "ktn01",
 	"require" : "4.1.20",
-	"category" : "monitoring",
+	"category" : "programming",
 	"hasDependency" : false,
 	"hasOwnDeamon" : false,
 	"maxDependancyInstallTime" : 0,

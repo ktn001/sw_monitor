@@ -19,7 +19,7 @@
 /* * ***************************Includes********************************* */
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 
-class swmonitor extends eqLogic {
+class swassist extends eqLogic {
     /*     * *************************Attributs****************************** */
 
 
@@ -79,7 +79,7 @@ class swmonitor extends eqLogic {
     /*     * **********************Getteur Setteur*************************** */
 }
 
-class swmonitorCmd extends cmd {
+class swassistCmd extends cmd {
     /*     * *************************Attributs****************************** */
 
     /*     * ***********************Methode static*************************** */
@@ -88,9 +88,25 @@ class swmonitorCmd extends cmd {
     /*     * *********************Methode d'instance************************* */
 
 	// Exécution d'une commande
-	 public function execute($_options = array()) {
-
-	 }
+	public function execute($_options = array()) {
+		if ($this->getType() == 'info') {
+			try {
+				$result = jeedom::evaluateExpression($this->getConfiguration('calcul'));
+			 	if(is_string($result)){
+					$result = str_replace('"', '', $result);
+			 	}
+				return $result;
+			} catch (Exception $e) {
+				log::add('swassist', 'info', $e->getMessages());
+				return $this->getConfiguration('calcul');
+			}
+		}
+		if ($this->getType() == 'action') {
+			$cmdId = $this->getConfiguration('actionName');
+			$cmd = cmd::byId(str_replace('#', '', $cmdId));
+			$cmd->execCmd($_options);
+		}
+	}
 
     /*     * **********************Getteur Setteur*************************** */
 }
