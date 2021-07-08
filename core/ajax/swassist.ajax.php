@@ -24,9 +24,9 @@ try {
 		throw new Exception(__('401 - Accès non autorisé', __FILE__));
 	}
 
-	if (init('action') == 'getInfosToLink') {
+	if (init('action') == 'linkToEqLogic') {
 
-		$eqLogicToLinkId = init('eqLogicToLinkId');
+		$eqLogicToLinkId = init('eqLogicToLink_id');
 		if ($eqLogicToLinkId == ""){
 			throw new Exception(__("Id le l'équipement à lier non défini",__FILE__));
 		}
@@ -74,22 +74,6 @@ try {
 
 		}
 		ajax::success($return);
-	}
-
-	if (init('action') == 'linkEqLogic') {
-		$id = init("id");
-		if ($id == "") {
-			throw new Exception(__("ID non défini",__FILE__));
-		}
-		$swassist = swassist::byid($id);
-		if (!is_object($swassist)) {
-			throw new Exception(__("Pas de swassist trouvé avec ID : ",__FILE__) . $id);
-		}
-		if ($swassist->getEqType_name() != "swassist") {
-			throw new Exception(__("Function appelée pour un eqLogic qui n'est pas de type swassist mais ",__FILE__) . $swassist->getEqType_name());
-		}
-		$swassist->linkEqLogic(init ('eqLogicId'));
-		ajax::success();
 	}
 
 	throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
