@@ -22,51 +22,9 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
 class swassist extends eqLogic {
     /*     * *************************Attributs****************************** */
 
-
     /*     * ***********************Methode static*************************** */
 
-
     /*     * *********************Méthodes d'instance************************* */
-
-	// Fonction exécutée automatiquement avant la création de l'équipement
-	public function preInsert() {
-
-	}
-
-	// Fonction exécutée automatiquement après la création de l'équipement
-	public function postInsert() {
-
-	}
-
-	// Fonction exécutée automatiquement avant la mise à jour de l'équipement
-	public function preUpdate() {
-
-	}
-
-	// Fonction exécutée automatiquement après la mise à jour de l'équipement
-	public function postUpdate() {
-
-	}
-
-	// Fonction exécutée automatiquement avant la sauvegarde (création ou mise à jour) de l'équipement
-	public function preSave() {
-
-	}
-
-	// Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement
-	public function postSave() {
-
-	}
-
-	// Fonction exécutée automatiquement avant la suppression de l'équipement
-	public function preRemove() {
-
-	}
-
-	// Fonction exécutée automatiquement après la suppression de l'équipement
-	public function postRemove() {
-
-	}
 
 	public function importEqLogic ($eqLogicToImport_Id, $cmdEtatToImport_Id = -1, $cmdOnToImport_Id = -1, $cmdOffToImport_Id = -1) {
 		$eqLogicToImport = eqLogic::byId($eqLogicToImport_Id);
@@ -129,7 +87,6 @@ class swassistCmd extends cmd {
 
     /*     * ***********************Methode static*************************** */
 
-
     /*     * *********************Methode d'instance************************* */
 
 	public function preInsert () {
@@ -189,5 +146,4 @@ class swassistCmd extends cmd {
 
     /*     * **********************Getteur Setteur*************************** */
 }
-
 
