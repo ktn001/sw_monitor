@@ -55,7 +55,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			<span class="input-group-btn">
 				<!-- Les balises <a></a> sont volontairement fermées à la ligne suivante pour éviter les espaces entre les boutons. Ne pas modifier -->
 				<a class="btn btn-sm btn-default eqLogicAction roundedLeft" data-action="configure"><i class="fas fa-cogs"></i><span class="hidden-xs"> {{Configuration avancée}}</span>
-				</a><a class="btn btn-sm btn-default" id="bt_linkEqLogic"><i class="fas fa-link"></i><span class="hidden-xs">  {{Lier un équipement}}</span>
 				</a><a class="btn btn-sm btn-success eqLogicAction" data-action="save"><i class="fas fa-check-circle"></i> {{Sauvegarder}}
 				</a><a class="btn btn-sm btn-danger eqLogicAction roundedRight" data-action="remove"><i class="fas fa-minus-circle"></i> {{Supprimer}}
 				</a>
@@ -169,7 +168,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			<!-- Onglet des commandes de l'équipement -->
 			<div role="tabpanel" class="tab-pane" id="commandtab">
 				<div class="input-group pull-right" style="display:inline-flex">
-					<a class="btn btn-default btn-sm cmdAction roundedLeft" id="bt_addSwmInfo"><i class="fas fa-plus-circle"></i> {{Ajouter une info}}</a>
+					<a class="btn btn-default btn-sm cmdAction roundedLeft" id="bt_importEqLogic"><i class="fas fa-link"></i> {{Importer un équipement}}</a>
+					<a class="btn btn-default btn-sm cmdAction" id="bt_addSwmInfo"><i class="fas fa-plus-circle"></i> {{Ajouter une info}}</a>
 					<a class="btn btn-default btn-sm cmdAction roundedRight" id="bt_addSwmAction"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
 				</div>
 				<br/><br/>
@@ -180,7 +180,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<th style="width: 50px;"> ID</th>
 								<th style="width: 230px;">{{Nom}}</th>
 								<th style="width: 110px;">{{Sous-Type}}</th>
-								<th>{{Valeur}}</th>
+								<th>{{Commande liée}}</th>
 								<th>{{Paramètres}}</th>
 								<th style="width: 300px;">{{Options}}</th>
 								<th style="width: 150px;"></th>

@@ -20,18 +20,18 @@ if (!isConnect()) {
 }
 ?>
 
-<table class="table table-condensed table-bordered" id="table_mod_eqLogicToLink">
+<table class="table table-condensed table-bordered" id="table_mod_eqLogicToImport">
   <tr>
     <th style="width: 150px;">{{Objet}}</th>
     <th style="width: 150px;">{{Equipement}}</th>
   </tr>
   <tr>
-    <td id="mod_eqLogicToLink_object">
+    <td id="mod_eqLogicToImport_object">
       <select class='form-control'>
         <?php echo jeeObject::getUISelectList(); ?>
        </select>
      </td>
-     <td id="mod_eqLogicToLink_eqLogic"></td>
+     <td id="mod_eqLogicToImport_eqLogic"></td>
    </tr>
 </table>
 <div>
@@ -39,23 +39,23 @@ if (!isConnect()) {
   <fieldset>
     <div class="form-group">
       <label class="control-label col-sm-6">{{Etat}} :</label>
-      <div id="mod_eqLogicToLink_cmdEtat"></div>
+      <div id="mod_eqLogicToImport_cmdEtat"></div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-6">{{Commande EN}} :</label>
-      <div id="mod_eqLogicToLink_cmdOn"></div>
+      <div id="mod_eqLogicToImport_cmdOn"></div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-6">{{Commande HORS}} :</label>
-      <div id="mod_eqLogicToLink_cmdOff"></div>
+      <div id="mod_eqLogicToImport_cmdOff"></div>
     </div>
   </fieldset>
 </form>
 </div>
 <script>
-  mod_eqLogicToLink = {}
+  mod_eqLogicToImport = {}
 
-  $('#mod_eqLogicToLink_object').on({
+  $('#mod_eqLogicToImport_object').on({
     'change': function(event) {
       select=$(this).find('select').first()
       jeedom.object.getEqLogic({
@@ -65,7 +65,7 @@ if (!isConnect()) {
           $('#div_alert').showAlert({message: error.message, level: 'danger'})
         },
         success: function(eqLogics) {
-          $('#mod_eqLogicToLink_eqLogic').empty()
+          $('#mod_eqLogicToImport_eqLogic').empty()
           var selectEqLogic = '<select class="form-control">'
           for (var i in eqLogics) {
 	    if (eqLogics[i].eqType_name != "swassist") {
@@ -73,14 +73,14 @@ if (!isConnect()) {
             }
           }
           selectEqLogic += '</select>'
-          $('#mod_eqLogicToLink_eqLogic').append(selectEqLogic)
-          $('#mod_eqLogicToLink_eqLogic').trigger('change')
+          $('#mod_eqLogicToImport_eqLogic').append(selectEqLogic)
+          $('#mod_eqLogicToImport_eqLogic').trigger('change')
         }
       })
     }
   })
 
-  $('#mod_eqLogicToLink_eqLogic').on({
+  $('#mod_eqLogicToImport_eqLogic').on({
     'change': function(event) {
       select=$(this).find('select').first()
       jeedom.eqLogic.getCmd({
@@ -103,12 +103,12 @@ if (!isConnect()) {
             }
 	    if (cmd.type == 'action' && cmd.subType == 'other') {
               selected = ""
-              if (cmd.name.search(/\b(on|en)\b/i) >= 0) {
+	      if (jeedom.cmd.normalizeName(cmd.name) == 'on') {
                 selected = " selected"
               }
               selectOn  += '<option value="' + cmd.id + '"' + selected + '>' + cmd.name + '</option>'
               selected = ""
-              if (cmd.name.search(/\b(off|hors)\b/i) >= 0) {
+	      if (jeedom.cmd.normalizeName(cmd.name) == 'off') {
                 selected = " selected"
               }
               selectOff += '<option value="' + cmd.id + '"' + selected + '>' + cmd.name + '</option>'
@@ -117,24 +117,24 @@ if (!isConnect()) {
 	  selectEtat += '</select>' 
 	  selectOn   += '</select>' 
 	  selectOff  += '</select>' 
-	  $('#mod_eqLogicToLink_cmdEtat').empty().append(selectEtat)
-	  $('#mod_eqLogicToLink_cmdOn').empty().append(selectOn)
-	  $('#mod_eqLogicToLink_cmdOff').empty().append(selectOff)
+	  $('#mod_eqLogicToImport_cmdEtat').empty().append(selectEtat)
+	  $('#mod_eqLogicToImport_cmdOn').empty().append(selectOn)
+	  $('#mod_eqLogicToImport_cmdOff').empty().append(selectOff)
 	}
       })
     }
   })
 
-  $('#mod_eqLogicToLink_object').trigger('change')
+  $('#mod_eqLogicToImport_object').trigger('change')
 
-  mod_eqLogicToLink.getSelection = function () {
+  mod_eqLogicToImport.getSelection = function () {
     retour = {}
-    retour.eqLogicId = $('#mod_eqLogicToLink_eqLogic').find('select').first().value()
-    retour.cmdEtat = $('#mod_eqLogicToLink_cmdEtat').find('select').first().value()
-    retour.cmdOn = $('#mod_eqLogicToLink_cmdOn').find('select').first().value()
-    retour.cmdOff = $('#mod_eqLogicToLink_cmdOff').find('select').first().value()
+    retour.eqLogicId = $('#mod_eqLogicToImport_eqLogic').find('select').first().value()
+    retour.cmdEtat = $('#mod_eqLogicToImport_cmdEtat').find('select').first().value()
+    retour.cmdOn = $('#mod_eqLogicToImport_cmdOn').find('select').first().value()
+    retour.cmdOff = $('#mod_eqLogicToImport_cmdOff').find('select').first().value()
     return (retour)
   }
 
-  $('.mod_eqLogicToLink_object').trigger('change')
+  $('.mod_eqLogicToImport_object').trigger('change')
 </script>

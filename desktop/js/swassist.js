@@ -15,10 +15,10 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-$('#bt_linkEqLogic').off('click').on('click',function () {
-    if ($('#mod_cmdToLink').length == 0) {
-	$('body').append('<div id="mod_cmdToLink" title="{{Sélectionner un équipement à lier}}"/>');
-	$("#mod_cmdToLink").dialog({
+$('#bt_importEqLogic').off('click').on('click',function () {
+    if ($('#mod_cmdToImport').length == 0) {
+	$('body').append('<div id="mod_cmdToImport" title="{{Sélectionner un équipement à lier}}"/>');
+	$("#mod_cmdToImport").dialog({
 	    closeText: '',
 	    autoOpen: false,
 	    modal: true,
@@ -26,23 +26,43 @@ $('#bt_linkEqLogic').off('click').on('click',function () {
 	    width: 800
 	});
 	jQuery.ajaxSetup({async: false});
-	$('#mod_cmdToLink').load('index.php?v=d&plugin=swassist&modal=cmdToLink');
+	$('#mod_cmdToImport').load('index.php?v=d&plugin=swassist&modal=cmdToImport');
 	jQuery.ajaxSetup({async: true});
     }
-    $('#mod_cmdToLink').dialog('option', 'buttons', {
+    $('#mod_cmdToImport').dialog('option', 'buttons', {
 	"{{Annuler}}": function () {
 	    $(this).dialog("close");
 	},
 	"{{Valider}}": function () {
-	    var retour = mod_eqLogicToLink.getSelection();
-	    $('#div_alert').showAlert({message: "eqLogicId: " + retour.eqLogicId, level: 'danger'});
-	    $('#div_alert').showAlert({message: "Etat: " + retour.cmdEtat, level: 'danger'});
-	    $('#div_alert').showAlert({message: "On: " + retour.cmdOn, level: 'danger'});
-	    $('#div_alert').showAlert({message: "Off: " + retour.cmdOff, level: 'danger'});
+	    var retour = mod_eqLogicToImport.getSelection();
 	    $(this).dialog("close");
+	    $.ajax({
+		type: "POST",
+		url: "plugins/swassist/core/ajax/swassist.ajax.php",
+		data: {
+		    action: 'importEqLogic',
+		    id: $('.eqLogicAttr[data-l1key=id]').value(),
+		    eqLogicToImport: retour.eqLogicId,
+		    cmdEtat: retour.cmdEtat,
+		    cmdOn: retour.cmdOn,
+		    cmdOff: retour.cmdOff
+		},
+		dataType: 'json',
+		global: false,
+		error: function (request, status, error) {
+		    handleAjaxError(request, status, error);
+		},
+		success: function (data) {
+		    if (data.state != 'ok') {
+			$('#div_alert').showAlert({message: data.result, level: 'danger'});
+			return;
+		    }
+		    $('.eqLogicDisplayCard[data-eqLogic_id='+$('.eqLogicAttr[data-l1key=id]').value()+']').click();
+		}
+	    })
 	}
     });
-    $('#mod_cmdToLink').dialog('open');
+    $('#mod_cmdToImport').dialog('open');
 });
 
 /*
@@ -64,6 +84,29 @@ $('#bt_addSwmInfo').on('click', function (event) {
 $('#bt_addSwmAction').on('click', function (event) {
     addCmdToTable({type: 'action'});
     modifyWithoutSave = true;
+});
+
+/*
+ * Choix d'une info à lier
+ */
+$("#table_cmd").delegate(".listEquipementInfo", "click", function () {
+    var el = $(this);
+    jeedom.cmd.getSelectModal({cmd: {type: 'info'}}, function (result) {
+	var cmdLiee = el.closest('tr').find('.cmdAttr[data-l1key=configuration][data-l2key=' + el.data('input') + ']');
+	cmdLiee.val(result.human);
+    });
+});
+
+/*
+ *
+ */
+$("#table_cmd").delegate(".listEquipementAction", "click", function () {
+    var el = $(this);
+    var subtype = $(this).closest('.cmd').find('.cmdAttr[data-l1key=subType]').value();
+    jeedom.cmd.getSelectModal({cmd: {type: 'action', subType: subtype}}, function (result) {
+	var cmdLiee = el.closest('tr').find('.cmdAttr[data-l1key=configuration][data-l2key=' + el.data('input') + ']');
+	cmdLiee.val(result.human);
+    });
 });
 
 /*
@@ -90,17 +133,14 @@ function addCmdToTable(_cmd) {
 	tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
 	tr += '</td>';
 	tr += '<td>';
-	if(init(_cmd.configuration.virtualAction) != '1'){
-	    tr += '<textarea class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="calcul" style="height : 33px;" placeholder="{{Calcul}}"></textarea>';
-	    tr += '<a class="btn btn-default cursor listEquipementInfo btn-sm" data-input="calcul" style="width:100%;margin-top:2px;"><i class="fas fa-list-alt"></i> {{Rechercher équipement}}</a>';
-	}
+	tr += '<div class="input-group">';
+	tr += '<input class="cmdAttr form-control input-sm roundedLeft" data-l1key="configuration" data-l2key="cmdLiee" placeholder="{{Commande liée}}"></input>';
+	tr += '<span class="input-group-btn">';
+	tr += '<a class="btn btn-default btn-sm cursor listEquipementInfo roundedRight" data-input="cmdLiee"><i class="fas fa-list-alt"></i></a>';
+	tr += '</span>';
+	tr += '</div>';
 	tr += '</td>';
 	tr += '<td>';
-	tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="returnStateValue" placeholder="{{Valeur retour d\'état}}" style="width:48%;display:inline-block;">';
-	tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="returnStateTime" placeholder="{{Durée avant retour d\'état (min)}}" style="width:48%;display:inline-block;margin-left:2px;">';
-	tr += '<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="updateCmdId" style="display : none;" title="Commande d\'information à mettre à jour">';
-	tr += '<option value="">Aucune</option>';
-	tr += '</select>';
 	tr += '</td>';
 	tr += '<td>';
 	tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="minValue" placeholder="{{Min}}" title="{{Min}}" style="width:30%;display:inline-block;">';
@@ -143,7 +183,7 @@ function addCmdToTable(_cmd) {
 	tr += '</div>';
 	tr += '</div>';
 	tr += '</div>';
-	tr += '<select class="cmdAttr form-control tooltips input-sm" data-l1key="value" style="display : none;margin-top : 5px;margin-right : 10px;" title="{{La valeur de la commande vaut par défaut la commande}}">';
+	tr += '<select class="cmdAttr form-control tooltips input-sm" data-l1key="value" style="display: none; margin-top : 5px;margin-right : 10px;" title="{{La valeur de la commande vaut par défaut la commande}}">';
 	tr += '<option value="">Aucune</option>';
 	tr += '</select>';
 	tr += '</td>';
@@ -153,25 +193,13 @@ function addCmdToTable(_cmd) {
 	tr += '</td>';
 	tr += '<td>';
 	tr += '<div class="input-group" style="margin-bottom : 5px;">';
-	tr += '<input class="cmdAttr form-control input-sm roundedLeft" data-l1key="configuration" data-l2key="infoName" placeholder="{{Nom information}}"/>';
+	tr += '<input class="cmdAttr form-control input-sm roundedLeft" data-l1key="configuration" data-l2key="cmdLiee" placeholder="{{Nom information}}"/>';
 	tr += '<span class="input-group-btn">';
-	tr += '<a class="btn btn-default btn-sm cursor listEquipementAction roundedRight" data-input="infoName"><i class="fas fa-list-alt "></i></a>';
-	tr += '</span>';
-	tr += '</div>';
-	tr += '<div class="input-group">';
-	tr += '<input class="cmdAttr form-control input-sm roundedLeft" data-l1key="configuration" data-l2key="value" placeholder="{{Valeur}}" />';
-	tr += '<span class="input-group-btn">';
-	tr += '<a class="btn btn-default btn-sm cursor listEquipementInfo roundedRight" data-input="value"><i class="fas fa-list-alt "></i></a>';
+	tr += '<a class="btn btn-default btn-sm cursor listEquipementAction roundedRight" data-input="cmdLiee"><i class="fas fa-list-alt "></i></a>';
 	tr += '</span>';
 	tr += '</div>';
 	tr += '</td>';
 	tr += '<td>';
-	tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="returnStateValue" placeholder="{{Valeur retour d\'état}}" style="width:48%;display:inline-block;">';
-	tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="returnStateTime" placeholder="{{Durée avant retour d\'état (min)}}" style="width:48%;display:inline-block;margin-left:2px;">';
-	tr += '<select class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="updateCmdId" style="display : none;margin-bottom : 5px;" title="Commande d\'information à mettre à jour">';
-	tr += '<option value="">Aucune</option>';
-	tr += '</select>';
-	tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="updateCmdToValue" placeholder="Valeur de l\'information" style="display : none;">';
 	tr += '</td>';
 	tr += '<td>';
 	tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="minValue" placeholder="{{Min}}" title="{{Min}}" style="width:30%;display:inline-block;">';

@@ -24,55 +24,23 @@ try {
 		throw new Exception(__('401 - Accès non autorisé', __FILE__));
 	}
 
-	if (init('action') == 'linkToEqLogic') {
+	if (init('action') == 'importEqLogic') {
 
-		$eqLogicToLinkId = init('eqLogicToLink_id');
-		if ($eqLogicToLinkId == ""){
-			throw new Exception(__("Id le l'équipement à lier non défini",__FILE__));
-		}
 		$id = init("id");
-		if ($id == "") {
-			throw new Exception(__("ID non défini",__FILE__));
-		}
 		$swassist = swassist::byid($id);
 		if (!is_object($swassist)) {
-			throw new Exception(__("Pas de swassist trouvé avec ID : ",__FILE__) . $id);
+			throw new Exception(__("Equipement swassist introuvable : ",__FILE__) . $id);
 		}
 		if ($swassist->getEqType_name() != "swassist") {
 			throw new Exception(__("Function appelée pour un eqLogic qui n'est pas de type swassist mais ",__FILE__) . $swassist->getEqType_name());
 		}
 
-		$return = array();
-		$eqLogicCmds = cmd::byEqLogicId($eqLogicToLinkId);
-		foreach ($eqLogicCmds as $eqLogicCmd) {
-			$info = array (	"id"      => $eqLogicCmd->getId(),
-					"type"    => $eqLogicCmd->getType(),
-					"subType" => $eqLogicCmd->getsubType(),
-					"nom"     => $eqLogicCmd->getName());
-			$cmd = new cmd();
-			$cmd->setEqLogic_id($id);
-			$cmd->setName($eqLogicCmd->getName());
-			$cmd->setType($eqLogicCmd->getType());
-			$cmd->setSubType($eqLogicCmd->getSubType());
-			$cmd->setLogicalId($eqLogicCmd->getLogicalId());
-			$cmd->setOrder($eqLogicCmd->getOrder());
-			$cmd->setTemplate('dashboard',$eqLogicCmd->getTemplate('dashboard'));
-			$cmd->setTemplate('mobile',$eqLogicCmd->getTemplate('mobile'));
-			$cmd->setIsVisible($eqLogicCmd->getIsVisible());
-			if ($cmd->getType() == 'info') {
-				$cmd->setValue("#" . $eqLogicCmd->getId() . "#");
-				$cmd->setConfiguration('calcul',"#" . $eqLogicCmd->getId() . "#");
-				if ($cmd->getSubType() == 'numeric'){
-					$cmd->setConfiguration('minValue',$eqLogicCmd->getConfiguration('minValue'));
-					$cmd->setConfiguration('maxValue',$eqLogicCmd->getConfiguration('maxValue'));
-				}
-			}
-			if ($cmd->getType() == 'action') {
-				$cmd->setConfiguration("actionName","#" . $eqLogicCmd->getId() . "#");
-			}
-			$cmd->save();
+		$eqLogicToImportId = init('eqLogicToImport');
+		$cmdEtat = init('cmdEtat');
+		$cmdOn = init('cmdOn');
+		$cmdOff = init('cmdOff');
+		$swassist->importEqLogic( $eqLogicToImportId, $cmdEtat, $cmdOn, $cmdOff );
 
-		}
 		ajax::success($return);
 	}
 
@@ -81,4 +49,4 @@ try {
 } catch (Exception $e) {
 	ajax::error(displayException($e), $e->getCode());
 }
-
+?>
