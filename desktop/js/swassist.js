@@ -73,7 +73,7 @@ $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder:
 /*
  * Ajout d'une Info
  */
-$('#bt_addSwmInfo').on('click', function (event) {
+$('#bt_addSwassistInfo').on('click', function (event) {
     addCmdToTable({type: 'info'});
     modifyWithoutSave = true;
 });
@@ -81,7 +81,7 @@ $('#bt_addSwmInfo').on('click', function (event) {
 /*
  * Ajout d'une Action
  */
-$('#bt_addSwmAction').on('click', function (event) {
+$('#bt_addSwassistAction').on('click', function (event) {
     addCmdToTable({type: 'action'});
     modifyWithoutSave = true;
 });
@@ -98,7 +98,7 @@ $("#table_cmd").delegate(".listEquipementInfo", "click", function () {
 });
 
 /*
- *
+ * Choix d'une commande à lier
  */
 $("#table_cmd").delegate(".listEquipementAction", "click", function () {
     var el = $(this);
@@ -107,6 +107,19 @@ $("#table_cmd").delegate(".listEquipementAction", "click", function () {
 	var cmdLiee = el.closest('tr').find('.cmdAttr[data-l1key=configuration][data-l2key=' + el.data('input') + ']');
 	cmdLiee.val(result.human);
     });
+});
+
+/*
+ * Rend la selection du type de commande visible... ou pas
+ */
+$('#table_cmd').delegate('.cmdAttr[data-l1key=value]', "change", function () {
+	var el = $(this);
+	var select = el.closest('tr').find('[data-l2key=swCmdType]').first();
+	if (el.value() == ""){
+		select.hide();
+	}else{
+		select.show();
+	}
 });
 
 /*
@@ -200,6 +213,10 @@ function addCmdToTable(_cmd) {
 	tr += '</div>';
 	tr += '</td>';
 	tr += '<td>';
+	tr += '<select class="cmdAttr form-control tooltips input-sm" data-l1key="configuration" data-l2key="swCmdType" style="display: none; width: 80px" title="{{type de commande}}">';
+	tr += '<option value=1>ON</option>';
+	tr += '<option value=0>OFF</option>';
+	tr += '</select>';
 	tr += '</td>';
 	tr += '<td>';
 	tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="minValue" placeholder="{{Min}}" title="{{Min}}" style="width:30%;display:inline-block;">';

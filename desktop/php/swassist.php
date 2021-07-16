@@ -169,8 +169,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			<div role="tabpanel" class="tab-pane" id="commandtab">
 				<div class="input-group pull-right" style="display:inline-flex">
 					<a class="btn btn-default btn-sm cmdAction roundedLeft" id="bt_importEqLogic"><i class="fas fa-link"></i> {{Importer un équipement}}</a>
-					<a class="btn btn-default btn-sm cmdAction" id="bt_addSwmInfo"><i class="fas fa-plus-circle"></i> {{Ajouter une info}}</a>
-					<a class="btn btn-default btn-sm cmdAction roundedRight" id="bt_addSwmAction"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
+					<a class="btn btn-default btn-sm cmdAction" id="bt_addSwassistInfo"><i class="fas fa-plus-circle"></i> {{Ajouter une info}}</a>
+					<a class="btn btn-default btn-sm cmdAction roundedRight" id="bt_addSwassistAction"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
 				</div>
 				<br/><br/>
 				<div class="table-responsive">
