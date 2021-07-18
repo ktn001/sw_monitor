@@ -114,11 +114,11 @@ $("#table_cmd").delegate(".listEquipementAction", "click", function () {
  */
 $('#table_cmd').delegate('.cmdAttr[data-l1key=value]', "change", function () {
 	var el = $(this);
-	var select = el.closest('tr').find('[data-l2key=swCmdType]').first();
+	var options = el.closest('tr').find('.repeatOptions').first();
 	if (el.value() == ""){
-		select.hide();
+		options.hide();
 	}else{
-		select.show();
+		options.show();
 	}
 });
 
@@ -213,10 +213,22 @@ function addCmdToTable(_cmd) {
 	tr += '</div>';
 	tr += '</td>';
 	tr += '<td>';
-	tr += '<select class="cmdAttr form-control tooltips input-sm" data-l1key="configuration" data-l2key="swCmdType" style="display: none; width: 80px" title="{{type de commande}}">';
-	tr += '<option value=1>ON</option>';
-	tr += '<option value=0>OFF</option>';
+	tr += '<div class="input-group repeatOptions" style="display: none">';
+	tr += '<div class="form-group" style="display: inline-block; width: 80px; margin-right: 10px">';
+	tr += '<label classe="control-label form-control input-sm">{{Commande}}:</label>';
+	tr += '<select class="cmdAttr form-control tooltips input-sm" data-l1key="configuration" data-l2key="targetValue" title="{{type de commande}}">';
+	tr += '<option value="1">ON</option>';
+	tr += '<option value="0">OFF</option>';
 	tr += '</select>';
+	tr += '</div>';
+	tr += '<div class="form-group" style="display: inline-block; width: 80px; margin-right: 10px">';
+	tr += '<label>{{Répétitions}}:</label>';
+	tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="repetition" value=5>';
+	tr += '</div>';
+	tr += '<div class="form-group" style="display: inline-block; width: 80px">';
+	tr += '<label>{{Délai}}:</label>';
+	tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="delai" value=3>';
+	tr += '</div>';
 	tr += '</td>';
 	tr += '<td>';
 	tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="minValue" placeholder="{{Min}}" title="{{Min}}" style="width:30%;display:inline-block;">';
@@ -240,7 +252,7 @@ function addCmdToTable(_cmd) {
 	var tr = $('#table_cmd tbody tr').last();
 	jeedom.eqLogic.builSelectCmd({
 	    id:  $('.eqLogicAttr[data-l1key=id]').value(),
-	    filter: {type: 'info'},
+	    filter: {type: 'info', subType: 'binary'},
 	    error: function (error) {
 	      $('#div_alert').showAlert({message: error.message, level: 'danger'});
 	    },

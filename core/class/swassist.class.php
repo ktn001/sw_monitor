@@ -59,9 +59,17 @@ class swassist extends eqLogic {
 				$cmdEtat_Id = $cmd->getId();
 			}
 			if ($cmdToImport->getId() == $cmdOnToImport_Id) {
+				$cmd->setConfiguration('targetValue', '1');
+				$cmd->setConfiguration('repetition', '5');
+				$cmd->setConfiguration('delai', '3');
+				$cmd->save();
 				$cmdOn_Id = $cmd->getId();
 			}
 			if ($cmdToImport->getId() == $cmdOffToImport_Id) {
+				$cmd->setConfiguration('targetValue', '0');
+				$cmd->setConfiguration('repetition', '5');
+				$cmd->setConfiguration('delai', '3');
+				$cmd->save();
 				$cmdOff_Id = $cmd->getId();
 			}
 		}
@@ -123,6 +131,29 @@ class swassistCmd extends cmd {
 		}
 	}
 
+	function getCmdRetour () {
+		if ($this->getConfiguration('cmdLiee') == "") {
+			return null;
+		}
+		return cmd::byId(str_replace('#','',$this->getValue()));
+	}
+
+	function getCmdLiee () {
+		return cmd::byId(str_replace('#','',$this->getConfiguration('cmdLiee')));
+	}
+
+	function getRetry () {
+		return $this->getCache('repeatCountDown', 0);
+	}
+
+	function retry() {
+		$cmdLiee_id = str_replace('#','',$this->getConfiguration('cmdLiee'));
+		$cmdLiee = $this->getCmdLiee();
+		$cmdRetour = $this->getCmdRetour();
+		$this->setCache('repeatCountDown',$this->getCache('repeatCountDown')-1);
+		$cmdLiee->execCmd();
+	}
+
 	// Exécution d'une commande
 	public function execute($_options = array()) {
 		if ($this->getType() == 'info') {
@@ -131,6 +162,14 @@ class swassistCmd extends cmd {
 				if(is_string($result)){
 					$result = str_replace('"', '', $result);
 				}
+				$cmds = cmd::byEqlogicId($this->getEqLogic_id(),'action');
+				foreach ($cmds as $cmd) {
+					if (str_replace('#','',$cmd->getValue()) == $this->getId()) {
+						if ($result == $cmd->getConfiguration('targetValue')) {
+							$cmd->setCache('repeatCountDown',0);
+						}
+					}
+				}
 				return $result;
 			} catch (Exception $e) {
 				log::add('swassist', 'info', $e->getMessages());
@@ -138,9 +177,17 @@ class swassistCmd extends cmd {
 			}
 		}
 		if ($this->getType() == 'action') {
-			$cmdId = $this->getConfiguration('cmdLiee');
-			$cmd = cmd::byId(str_replace('#', '', $cmdId));
-			return $cmd->execCmd($_options);
+			$cmds = cmd::byEqlogicId($this->getEqLogic_id(),'action');
+			foreach ($cmds as $cmd) {
+				if ($cmd->getValue() == $this->getValue()) { 
+					$cmd->setCache('repeatCountDown',0);
+				}
+			}
+			$this->setCache('repeatCountDown',$this->getConfiguration('repetition'));
+			$return = $this->getCmdLiee()->execCmd($_options);
+			$cmd = __DIR__ . "/../php/repeatCmd.php -i " . $this->getId();
+			system::php($cmd . ' >> ' . log::getPathToLog('swassist') . ' 2>&1 &');
+			return $return;
 		}
 	}
 
