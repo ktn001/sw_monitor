@@ -11,8 +11,10 @@ Il est possible de créé et configurer un équipement soi-même mais le plus si
 
 ## Création automatique
 
-Dans cet exemple, nous allons assister le fonctionnement d'un équipement qui à les actions et infos suivantes:
+Dans cet exemple, nous allons assister le fonctionnement d'un équipement nommé \[bureau\]\[ZW-lampe\] qui a les actions et infos suivantes:
 
-+ **ON**: action pour allumer la lampe.
-+ **OFF**: action pour eteindre la lampe.
-+ 
++ **ON**: Action pour allumer la lampe.
++ **OFF**: Action pour eteindre la lampe.
++ **Allumé**: Info binaire qui indique si la lampe est allumée.
++ **Puissance**: Puissance de la lampe.
++ **Consommation**: Energie consommée par la lampe.
