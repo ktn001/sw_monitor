@@ -1,4 +1,4 @@
-# ![icon](../images/swassist_icon.png) Documentation du plugin "Switch Assistant" 
+# ![icon](../images/swassist_icon.png) Plugin "Switch Assistant" pour Jeedom
 Le plugin **swassit** permet de donner un ordre d'enclenchement ou de déclenchemenet à un équipement. L'ordre sera ensuite automatiquement répété jusqu'à ce que l'on aie un retour confirmant que l'ordre a bien été exécuté.
 
 # Configuration du plugin
