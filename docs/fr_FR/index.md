@@ -50,3 +50,6 @@ Ouvrir la page de gestion des équipement du plugin *swassist* et cliquer sur le
 + Resélectionner le panneau *Comandes* pour voir les commandes importées
 
 ![Les commandes importées](../images/commandes_apres_import.png)
+
+On voit que:
+* Une commande liée a été créée pour chaque 
