@@ -17,3 +17,36 @@ Dans cet exemple, nous allons assister le fonctionnement d'un équipement nommé
 + **Allumé**: Info binaire qui indique si la lampe est allumée.
 + **Puissance**: Puissance de la lampe.
 + **Consommation**: Energie consommée par la lampe.
+
+![Equipement ZW-lampe](../images/ZW-lampe.png)
+
+### Création de l'équipement *swassist*
+Ouvrir la page de gestion des équipement du plugin *swassist* et cliquer sur le bouton **ajouter**
+
+![Gestion des équipements](../images/avant_creation.png)
+
++ Saisir le nom de l'équipement
++ Sélectionner
++ Rendre l'équipement visible
++ Activer l'équipement
+
+![equipement créé](../images/equipement_lampe.png)
+
+### import de l'équipement à assister
+
++ Sélectionner le panneau **Commandes**
+![panneau commandes avant import](../images/commandes_avant_import.png)
+
++ Cliquer sur **Importer un équipement**
++ Sélection
+    + l'équipement à importer
+    + La commande qui indique l'état de switch
+    + La commande d'enclenchement
+    + La commande de déclenchment 
+
+![selection de l'équipement à importer](../images/selection_commandes.png)
+
++ Cliquer sur *valider*
++ Resélectionner le panneau *Comandes* pour voir les commandes importées
+
+![Les commandes importées](../images/commandes_apres_import.png)
