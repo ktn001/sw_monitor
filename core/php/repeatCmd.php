@@ -23,46 +23,46 @@ function  _log ($level, $msg) {
 	log::add('swassist', $level, 'repeatCmd [' . getmypid() . '] ' . $msg);
 }
 
-_log("debug", "Lancement de " . __FILE__ );
+_log("debug", __("Lancement de ",__FILE__) . __FILE__ );
 
 $options = getopt ("i:");
 
 if ( ! $options ) {
-	_log("error", __FILE__ . " : option erronée");
+	_log("error", __FILE__ . " : " . __("option erronée",__FILE__));
 	exit (1);
 }
 
 if (! array_key_exists("i", $options)) {
-	_log("error", __FILE__ . " : option -i manquante");
+	_log("error", __FILE__ . " : " .  __("option -i manquante",__FILE__));
 	exit (1);
 }
 
 $cmd = cmd::byId($options["i"]);
 
 if (! is_object($cmd) ) {
-	_log("error","Il n'existe pas de commande avec l'id " . $options['i'] );
+	_log("error",__("Il n'existe pas de commande avec l'id ",__FILE__) . $options['i'] );
 	exit (1);
 }
 
 if ($cmd->getEqType() != "swassist") {
-	_log("error","La commande " . $options['i'] . " n'est pas de type \"swassist\"");
+	_log("error",sprintf(__("La commande %S n'est pas de type swassist", __FILE__), $options['i']) . '"swassist"');
 	exit (1);
 }
 
-_log('debug','Commande ID : ' . $options['i']);
+_log('debug',__('Commande ID : ', __FILE__) . $options['i']);
 
 $delai = $cmd->getConfiguration('delai');
-_log("debug","Délai: $delai");
+_log("debug",__("Délai: ", __FILE__) . $delai);
 
 while ($cmd->getRetry()) {
-	_log("info", "Relance de la commande " . $cmd->getHumanName()); 
+	_log("info", __("Relance de la commande ", __FILE__) . $cmd->getHumanName()); 
 	$cmd->retry();
 	sleep ($delai);
 }
 sleep ($delai);
 
 if ($cmd->getCmdRetour()->execCmd() != $cmd->getConfiguration('targetValue')) {
-	_log('error', $cmd->getHumanName() . ": pas de retour de l'execution");
+	_log('alert', __("Echec de la commande ",__FILE__) . $cmd->getHumanName());
 }
 
 exit (0);

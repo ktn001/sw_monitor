@@ -41,7 +41,7 @@ try {
 		$cmdOff = init('cmdOff');
 		$swassist->importEqLogic( $eqLogicToImportId, $cmdEtat, $cmdOn, $cmdOff );
 
-		ajax::success($return);
+		ajax::success();
 	}
 
 	throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
