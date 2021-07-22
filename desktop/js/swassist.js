@@ -123,6 +123,13 @@ $('#table_cmd').delegate('.cmdAttr[data-l1key=value]', "change", function () {
 });
 
 /*
+ *
+ */
+function prePrintEqLogic(_id) {
+	    $('#bt_importEqLogic').removeClass('disabled');
+}
+
+/*
 * Fonction permettant l'affichage des commandes dans l'équipement
 */
 function addCmdToTable(_cmd) {
@@ -131,6 +138,11 @@ function addCmdToTable(_cmd) {
     }
     if (!isset(_cmd.configuration)) {
 	_cmd.configuration = {};
+    }
+
+    console.log("id: <" + init(_cmd.id) + ">" );
+    if (init(_cmd.id) != '') {
+	    $('#bt_importEqLogic').addClass('disabled');
     }
 
     if (init(_cmd.type) == 'info') {
