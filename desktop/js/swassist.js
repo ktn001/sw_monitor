@@ -139,6 +139,14 @@ function addCmdToTable(_cmd) {
     if (!isset(_cmd.configuration)) {
 	_cmd.configuration = {};
     }
+    if (init(_cmd.logicalId) == 'refresh') {
+	return;
+    }
+
+    console.log("id: <" + init(_cmd.id) + ">" );
+    if (init(_cmd.id) != '') {
+	$('#bt_importEqLogic').addClass('disabled');
+    }
 
     console.log("id: <" + init(_cmd.id) + ">" );
     if (init(_cmd.id) != '') {
