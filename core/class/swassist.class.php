@@ -23,6 +23,18 @@ class swassist extends eqLogic {
     /*     * *************************Attributs****************************** */
 
     /*     * ***********************Methode static*************************** */
+	public static function deadCmd() {
+		$return = array();
+		foreach (eqLogic::byType('swassist') as $swassist) {
+			foreach ($swassist->getCmd() as $cmd) {
+				preg_match_all("/#(\d+)#/", $cmd->getConfiguration('cmdLiee'), $matches);
+				foreach ($matches[1] as $cmd_id) {
+					$return[] = array('detail' => 'swassist ' . $swassist->getHumanName() . __(' dans le commande ',__FILE) . $cmd->getName(), 'help' => 'cmdLiee', 'who' => '#' . $cmd_id . '#');
+				}
+			}
+		}
+		return $return;
+	}
 
     /*     * *********************Méthodes d'instance************************* */
 
@@ -40,6 +52,10 @@ class swassist extends eqLogic {
 		$cmdOff_Id = -1;
 		$cmdsToImport = cmd::byEqLogicId($eqLogicToImport_Id);
 		foreach ($cmdsToImport as $cmdToImport) {
+			if ($cmdToImport->getLogicalId() == "refresh") {
+				log::add('swassist','info',sprintf(__("La commande %s n'est pas pas importée car c'est une commande 'refresh'",__FILE__),$cmdToImport->getHumanName()));
+				continue;
+			}
 			log::add('swassist','debug',__("Import de la commande ",__FILE__) . $cmdToImport->getHumanName() . " (id: " . $cmdToImport->getId() . ")");
 			$cmd = swassistCmd::byEqLogicIdCmdName($this->getId(),$cmdToImport->getName());
 			if (!is_object($cmd)) {
@@ -85,6 +101,34 @@ class swassist extends eqLogic {
 				$cmd->save();
 			}
 		}
+		$this->refresh();
+	}
+ 
+	public function refresh() {
+		try {
+			foreach ($this->getCmd('info') as $cmd) {
+				$value = $cmd->execute();
+				if ($cmd->execCmd() != $cmd->formatValue($value)) {
+					$cmd->event($value);
+				}
+			}
+		} catch (Exception $exc) {
+			log::add('swassist','error',__('Erreur pour ',__FILE__) . $eqLogic->getHumanName() . ' : ' . $exc->getMessage());
+		}
+	}
+
+	public function postInsert() {
+		$cmd = new swassistCmd();
+		$cmd->setEqLogic_id($this->getId());
+		$cmd->setLogicalId("refresh");
+		$cmd->setName(__("Rafraichir",__FILE__));
+		$cmd->setType("action");
+		$cmd->setSubType("other");
+		$cmd->save();
+	}
+
+	public function postSave() {
+		$this->refresh();
 	}
 
     /*     * **********************Getteur Setteur*************************** */
@@ -97,7 +141,17 @@ class swassistCmd extends cmd {
 
     /*     * *********************Methode d'instance************************* */
 
+	public function dontRemoveCmd() {
+		if ($this->getLogicalId() == 'refresh') {
+			return true;
+		}
+		return false;
+	}
+
 	public function preInsert () {
+		if ($this->getLogicalId() == "refresh") {
+			return;
+		}
 		$cmdLiee_id = str_replace("#", "",$this->getConfiguration('cmdLiee'));
 		$cmdLiee = cmd::byId($cmdLiee_id);
 		if ( ! is_object($cmdLiee)) {
@@ -106,6 +160,7 @@ class swassistCmd extends cmd {
 		$this->setSubType($cmdLiee->getSubType());
 		$this->setIsVisible($cmdLiee->getIsVisible());
 		$this->setLogicalId($cmdLiee->getLogicalId());
+		$this->setUnite($cmdLiee->getUnite());
 		$cfgCmdLiee = $cmdLiee->getConfiguration();
 		$configs = array('minValue', 'maxValue', 'listValue');
 		foreach ($configs as $config) {
@@ -120,6 +175,9 @@ class swassistCmd extends cmd {
 	}
 
 	public function preSave () {
+		if ($this->getLogicalId() == "refresh") {
+			return;
+		}
 		$name = trim ($this->getName());
 		$cmdLiee_id = str_replace("#", "",$this->getConfiguration('cmdLiee'));
 		$cmdLiee = cmd::byId($cmdLiee_id);
@@ -156,6 +214,10 @@ class swassistCmd extends cmd {
 
 	// Exécution d'une commande
 	public function execute($_options = array()) {
+		if ($this->getLogicalId() == 'refresh') {
+			$this->getEqLogic()->refresh();
+			return;
+		}
 		if ($this->getType() == 'info') {
 			try {
 				$result = jeedom::evaluateExpression($this->getConfiguration('cmdLiee'));
