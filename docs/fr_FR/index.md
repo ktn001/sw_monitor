@@ -29,6 +29,7 @@ Ouvrir la page de gestion des équipement du plugin *swassist* et cliquer sur le
 + Sélectionner
 + Rendre l'équipement visible
 + Activer l'équipement
++ Sauvegarder
 
 ![equipement créé](../images/equipement_lampe.png)
 
