@@ -7,7 +7,7 @@ Le plugin ne nécessite aucune configuration, il faut juste l’activer.
 ![Page de configuration du plugin](../images/config_plugin.png)
 
 # Création d'un équipement
-Il est possible de créer et configurer un équipement soi-même mais le plus simple est de créer en équipement "vide" puis de de lier à l'équipement qui sera comandé via notre équipement swassist.
+Il est possible de créer et configurer un équipement soi-même mais le plus simple est de créer un équipement "vide" puis de le lier à l'équipement qui sera assisté.
 
 ## Création automatique
 Dans cet exemple, nous allons assister le fonctionnement d'un équipement nommé \[bureau\]\[ZW-lampe\] qui a les actions et infos suivantes:
