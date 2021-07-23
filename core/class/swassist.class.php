@@ -29,7 +29,9 @@ class swassist extends eqLogic {
 			foreach ($swassist->getCmd() as $cmd) {
 				preg_match_all("/#(\d+)#/", $cmd->getConfiguration('cmdLiee'), $matches);
 				foreach ($matches[1] as $cmd_id) {
-					$return[] = array('detail' => 'swassist ' . $swassist->getHumanName() . __(' dans le commande ',__FILE) . $cmd->getName(), 'help' => 'cmdLiee', 'who' => '#' . $cmd_id . '#');
+					if (!cmd::byId(str_replace('#', '', $cmd_id))){
+						$return[] = array('detail' => 'swassist ' . $swassist->getHumanName() . __(' dans le commande ',__FILE) . $cmd->getName(), 'help' => 'cmdLiee', 'who' => '#' . $cmd_id . '#');
+					}
 				}
 			}
 		}
