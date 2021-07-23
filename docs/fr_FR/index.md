@@ -53,4 +53,16 @@ Ouvrir la page de gestion des équipement du plugin *swassist* et cliquer sur le
 ![Les commandes importées](../images/commandes_apres_import.png)
 
 On voit que:
-* Une commande liée a été créée pour chaque 
+* Une commande liée a été créée pour chaque commande de l'équipement assisté.
+* La commande 1103 est la commande d'enclechement.
+* La commande 1104 est la commande de déclenchement.
+* Etat est l'info de retour pour les commande d'enclenchement et de déclenchement.
+* Les comandes d'enclencement et de déclenchement seront répétée au maximum 5 fois toutes les 3 secondes.
+* La valeur des options des commandes ont été reprises des comandes liées.
+
+### L'équipement créé dans le dashboard
+
+![dashboard](../images/dashboard.png)
+On voit dans le dashboard que les définition des widgets ont été reprises de l'équipement assisté.
+
+Un click sur l'icon de l'ampoule de l'équipement swassist provoquera l'extinction ou l'allumage de l'équipement assisté. On peut donc rendre l'équipement assisté invisible et l'on utilisera uniquement l'équipement swassist et ses commandes pourront également être utilisées dans les alertes et scénarios à la place des commandes de l'équipement assisté.
