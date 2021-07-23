@@ -1,6 +1,6 @@
 {
 	"id" : "swassist",
-	"name" : "switch assistant",
+	"name" : "Switch assistant",
 	"description" : {
 		"fr_FR": "Plugin pour assister le fonctionnement des interrupteurs"
 	},
