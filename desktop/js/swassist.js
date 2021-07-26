@@ -123,7 +123,22 @@ $('#table_cmd').delegate('.cmdAttr[data-l1key=value]', "change", function () {
 });
 
 /*
- *
+ * Rend la selection du type de commande visible... ou pas
+ */
+$('#table_cmd').delegate('.cmdAttr[data-l1key=configuration][data-l2key=targetValue]', "change", function () {
+	var el = $(this);
+	isAssist = el.value() != '';
+	swaparams = el.closest('tr').find('.swaparam').each(function(){
+		if (isAssist) {
+			$(this).show();
+		} else {
+			$(this).hide()
+		}
+	});
+});
+
+/*
+ * Réactivation du bouton d'import avant remplissage
  */
 function prePrintEqLogic(_id) {
 	    $('#bt_importEqLogic').removeClass('disabled');
@@ -143,12 +158,10 @@ function addCmdToTable(_cmd) {
 	return;
     }
 
-    console.log("id: <" + init(_cmd.id) + ">" );
     if (init(_cmd.id) != '') {
 	$('#bt_importEqLogic').addClass('disabled');
     }
 
-    console.log("id: <" + init(_cmd.id) + ">" );
     if (init(_cmd.id) != '') {
 	    $('#bt_importEqLogic').addClass('disabled');
     }
@@ -234,18 +247,19 @@ function addCmdToTable(_cmd) {
 	tr += '</td>';
 	tr += '<td>';
 	tr += '<div class="input-group repeatOptions" style="display: none">';
-	tr += '<div class="form-group" style="display: inline-block; width: 80px; margin-right: 10px">';
+	tr += '<div class="form-group" style="display: inline-block; width: 110px; margin-right: 10px">';
 	tr += '<label classe="control-label form-control input-sm">{{Commande}}:</label>';
 	tr += '<select class="cmdAttr form-control tooltips input-sm" data-l1key="configuration" data-l2key="targetValue" title="{{type de commande}}">';
+	tr += '<option value="">non assistée</option>';
 	tr += '<option value="1">ON</option>';
 	tr += '<option value="0">OFF</option>';
 	tr += '</select>';
 	tr += '</div>';
-	tr += '<div class="form-group" style="display: inline-block; width: 80px; margin-right: 10px">';
+	tr += '<div class="form-group swaparam" style="display: inline-block; width: 80px; margin-right: 10px">';
 	tr += '<label>{{Répétitions}}:</label>';
 	tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="repetition" value=5>';
 	tr += '</div>';
-	tr += '<div class="form-group" style="display: inline-block; width: 80px">';
+	tr += '<div class="form-group swaparam" style="display: inline-block; width: 80px">';
 	tr += '<label>{{Délai}}:</label>';
 	tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="delai" value=3>';
 	tr += '</div>';

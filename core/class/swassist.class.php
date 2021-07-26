@@ -40,7 +40,7 @@ class swassist extends eqLogic {
 
     /*     * *********************Méthodes d'instance************************* */
 
-	public function importEqLogic ($eqLogicToImport_Id, $cmdEtatToImport_Id = -1, $cmdOnToImport_Id = -1, $cmdOffToImport_Id = -1) {
+	public function importEqLogic($eqLogicToImport_Id, $cmdEtatToImport_Id = -1, $cmdOnToImport_Id = -1, $cmdOffToImport_Id = -1) {
 		$eqLogicToImport = eqLogic::byId($eqLogicToImport_Id);
 		if (!is_object($eqLogicToImport)) {
 		    throw new Exception(__("Equipement introuvable : " ,__FILE__) . $eqLogicToImport_Id);
@@ -150,7 +150,7 @@ class swassistCmd extends cmd {
 		return false;
 	}
 
-	public function preInsert () {
+	public function preInsert() {
 		if ($this->getLogicalId() == "refresh") {
 			return;
 		}
@@ -176,7 +176,7 @@ class swassistCmd extends cmd {
 		$this->setTemplate('mobile',$cmdLiee->getTemplate('mobile'));
 	}
 
-	public function preSave () {
+	public function preSave() {
 		if ($this->getLogicalId() == "refresh") {
 			return;
 		}
@@ -191,26 +191,27 @@ class swassistCmd extends cmd {
 		}
 	}
 
-	function getCmdRetour () {
-		if ($this->getConfiguration('cmdLiee') == "") {
-			return null;
+	function setWaiting($value = '') {
+		if ($value == '') {
+			$value = $this->getWaiting();
 		}
-		return cmd::byId(str_replace('#','',$this->getValue()));
-	}
-
-	function getCmdLiee () {
-		return cmd::byId(str_replace('#','',$this->getConfiguration('cmdLiee')));
-	}
-
-	function getRetry () {
-		return $this->getCache('repeatCountDown', 0);
+		if ($value == $this->execCmd()) {
+			$this->setCache('waiting', '');
+		} else {
+			if ($value != $this->getWaiting()) {
+				$this->setCache('waiting', $value);
+			}
+		}
 	}
 
 	function retry() {
-		$cmdLiee_id = str_replace('#','',$this->getConfiguration('cmdLiee'));
+		if ($this->getConfiguration('targetValue') == '') {
+			return;
+		}
 		$cmdLiee = $this->getCmdLiee();
-		$cmdRetour = $this->getCmdRetour();
-		$this->setCache('repeatCountDown',$this->getCache('repeatCountDown')-1);
+		if ($this->getCmdRetour()->getWaiting() == $cmdLiee->execCmd()) {
+			$this->setCache('waiting','');
+		}
 		$cmdLiee->execCmd();
 	}
 
@@ -223,16 +224,8 @@ class swassistCmd extends cmd {
 		if ($this->getType() == 'info') {
 			try {
 				$result = jeedom::evaluateExpression($this->getConfiguration('cmdLiee'));
-				if(is_string($result)){
-					$result = str_replace('"', '', $result);
-				}
-				$cmds = cmd::byEqlogicId($this->getEqLogic_id(),'action');
-				foreach ($cmds as $cmd) {
-					if (str_replace('#','',$cmd->getValue()) == $this->getId()) {
-						if ($result == $cmd->getConfiguration('targetValue')) {
-							$cmd->setCache('repeatCountDown',0);
-						}
-					}
+				if ($result == $this->getWaiting()) {
+					$this->setCache('waiting', '');
 				}
 				return $result;
 			} catch (Exception $e) {
@@ -241,14 +234,15 @@ class swassistCmd extends cmd {
 			}
 		}
 		if ($this->getType() == 'action') {
-			$cmds = cmd::byEqlogicId($this->getEqLogic_id(),'action');
-			foreach ($cmds as $cmd) {
-				if ($cmd->getValue() == $this->getValue()) { 
-					$cmd->setCache('repeatCountDown',0);
-				}
+			$cmdRetour = $this->getCmdRetour();
+			if (is_object($cmdRetour)) {
+				$cmdRetour->setWaiting($this->getConfiguration('targetValue'));
 			}
-			$this->setCache('repeatCountDown',$this->getConfiguration('repetition'));
-			$return = $this->getCmdLiee()->execCmd($_options);
+			$cmdLiee = $this->getCmdLiee();
+			if ($cmdLiee == null) {
+				log::add("error","swassist", __("commande Liee introuvable", __FILE__));
+			}
+			$return = $cmdLiee->execCmd($_options);
 			$cmd = __DIR__ . "/../php/repeatCmd.php -i " . $this->getId();
 			system::php($cmd . ' >> ' . log::getPathToLog('swassist') . ' 2>&1 &');
 			return $return;
@@ -256,5 +250,42 @@ class swassistCmd extends cmd {
 	}
 
     /*     * **********************Getteur Setteur*************************** */
+
+	function getCmdLiee() {
+		$cmdLiee_id = $this->getConfiguration('cmdLiee');
+		if ($cmdLiee_id == "") {
+			return null;
+		}
+		$cmd = cmd::byId(str_replace('#','',$cmdLiee_id));
+		if (! is_object($cmd)) {
+			log::add("error","swassist", sprintf (__("commande %s introuvable", __FILE__),$cmdLiee_id));
+		}
+		log::add("debug","swassist", $cmd->getHumanName());
+		return $cmd;
+	}
+
+	function getCmdRetour() {
+		if ($this->getConfiguration('cmdLiee') == "") {
+			return null;
+		}
+		return cmd::byId(str_replace('#','',$this->getValue()));
+	}
+
+	function getDelai() {
+		return $this->getConfiguration('delai');
+	}
+
+	function getRepetition() {
+		return $this->getConfiguration('repetition');
+	}
+
+	function getTargetValue() {
+		return $this->getConfiguration('targetValue');
+	}
+
+	function getWaiting() {
+		return $this->getCache('waiting');
+	}
+
 }
 
