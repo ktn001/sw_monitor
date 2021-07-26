@@ -25,44 +25,63 @@ function  _log ($level, $msg) {
 
 _log("debug", __("Lancement de ",__FILE__) . __FILE__ );
 
+/* Vérification des options de la ligne de commande */
+/* ************************************************ */
 $options = getopt ("i:");
-
 if ( ! $options ) {
 	_log("error", __FILE__ . " : " . __("option erronée",__FILE__));
 	exit (1);
 }
-
 if (! array_key_exists("i", $options)) {
 	_log("error", __FILE__ . " : " .  __("option -i manquante",__FILE__));
 	exit (1);
 }
+_log('debug',__('Commande ID : ', __FILE__) . $options['i']);
 
+/* Création de l'instance de l'objet cmd 'action' */
+/* ********************************************** */
 $cmd = cmd::byId($options["i"]);
-
 if (! is_object($cmd) ) {
 	_log("error",__("Il n'existe pas de commande avec l'id ",__FILE__) . $options['i'] );
 	exit (1);
 }
-
 if ($cmd->getEqType() != "swassist") {
 	_log("error",sprintf(__("La commande %S n'est pas de type swassist", __FILE__), $options['i']) . '"swassist"');
 	exit (1);
 }
 
-_log('debug',__('Commande ID : ', __FILE__) . $options['i']);
+/* Récupération des options de répétition */
+/* ************************************** */
+$delai = $cmd->getDelai();
+$repetitionMax = $cmd->getRepetition();
+$valeurCible = $cmd->getTargetValue();
+_log("debug",__("Délai entre reépétitions: ", __FILE__) . $delai);
+_log("debug",__("Nombre max de répétitions: ", __FILE__) . $repetitionMax);
+_log("debug",__("Valeur cible: ", __FILE__) . $valeurCible);
 
-$delai = $cmd->getConfiguration('delai');
-_log("debug",__("Délai: ", __FILE__) . $delai);
+/* Création de l'instance de l'objet cmd de retour d'info */
+/* ****************************************************** */
+$cmdRetour = $cmd->getCmdRetour();
+if (! is_object($cmdRetour)){
+	_log("error",__("Commande de retour introuvable", __FILE__));
+	exit (1);
+}
 
-while ($cmd->getRetry()) {
+sleep ($delai);
+$count=0;
+while ($cmdRetour->getWaiting() == $valeurCible) {
 	_log("info", __("Relance de la commande ", __FILE__) . $cmd->getHumanName()); 
 	$cmd->retry();
+	$count++;
 	sleep ($delai);
+	if ($count >= $repetitionMax) {
+		break;
+	}
 }
-sleep ($delai);
-
-if ($cmd->getCmdRetour()->execCmd() != $cmd->getConfiguration('targetValue')) {
-	_log('alert', __("Echec de la commande ",__FILE__) . $cmd->getHumanName());
+if ($cmdRetour->getWaiting() == $valeurCible) {
+	_log('alert', __("La commande a échoué", __FILE__));
+} else {
+	_log('info', sprintf(__("Commande exécutée après %d répétitions", __FILE__), $count));
 }
 
 exit (0);
