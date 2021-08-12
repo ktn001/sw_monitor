@@ -1,5 +1,5 @@
 # ![icon](../images/swassist_icon.png) Plugin "Switch Assistant" pour Jeedom
-Le plugin **swassit** permet de donner un ordre d'enclenchement ou de déclenchemenet à un équipement. L'ordre sera ensuite automatiquement répété jusqu'à ce que l'on aie un retour confirmant que l'ordre a bien été exécuté.
+Le plugin **swassit** permet d'envoyer un ordre d'enclenchement ou de déclenchemenet à un équipement. L'ordre sera ensuite automatiquement répété jusqu'à ce que l'on a un retour confirmant que l'ordre a bien été exécuté.
 
 # Configuration du plugin
 Le plugin ne nécessite aucune configuration, il faut juste l’activer.
@@ -7,7 +7,7 @@ Le plugin ne nécessite aucune configuration, il faut juste l’activer.
 ![Page de configuration du plugin](../images/config_plugin.png)
 
 # Création d'un équipement
-Il est possible de créer et configurer un équipement soi-même mais le plus simple est de créer un équipement "vide" puis de le lier à l'équipement qui sera assisté.
+Il est possible de créer et configurer un équipement soi-même mais le plus simple est de créer un équipement "vide" puis de le lier au switch qui sera assisté.
 
 ## Création automatique
 Dans cet exemple, nous allons assister le fonctionnement d'un équipement nommé \[bureau\]\[ZW-lampe\] qui a les actions et infos suivantes:
@@ -21,12 +21,12 @@ Dans cet exemple, nous allons assister le fonctionnement d'un équipement nommé
 ![Equipement ZW-lampe](../images/ZW-lampe.png)
 
 ### Création de l'équipement *swassist*
-Ouvrir la page de gestion des équipement du plugin *swassist* et cliquer sur le bouton **ajouter**
+Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur le bouton **ajouter**
 
 ![Gestion des équipements](../images/avant_creation.png)
 
 + Saisir le nom de l'équipement
-+ Sélectionner
++ Sélectionner l'objet parent
 + Rendre l'équipement visible
 + Activer l'équipement
 + Sauvegarder
@@ -65,4 +65,4 @@ On voit que:
 ![dashboard](../images/dashboard.png)
 On voit dans le dashboard que les définition des widgets ont été reprises de l'équipement assisté.
 
-Un click sur l'icon de l'ampoule de l'équipement swassist provoquera l'extinction ou l'allumage de l'équipement assisté. On peut donc rendre l'équipement assisté invisible et l'on utilisera uniquement l'équipement swassist et ses commandes pourront également être utilisées dans les alertes et scénarios à la place des commandes de l'équipement assisté.
+Un click sur l'icône de l'ampoule de l'équipement swassist provoquera l'extinction ou l'allumage de l'équipement assisté. On peut donc rendre l'équipement assisté invisible et l'on utilisera uniquement l'équipement swassist et ses commandes pourront également être utilisées dans les alertes et scénarios à la place des commandes de l'équipement assisté.
