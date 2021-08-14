@@ -1,15 +1,15 @@
 # ![icon](../images/swassist_icon.png) Plugin "Switch Assistant" pour Jeedom
 Le plugin **swassit** permet d'envoyer un ordre d'enclenchement ou de déclenchemenet à un équipement. L'ordre sera ensuite automatiquement répété jusqu'à ce que l'on a un retour confirmant que l'ordre a bien été exécuté.
 
-# Configuration du plugin
+# 1. Configuration du plugin
 Le plugin ne nécessite aucune configuration, il faut juste l’activer.
 
 ![Page de configuration du plugin](../images/config_plugin.png)
 
-# Création d'un équipement
+# 2. Création d'un équipement
 Il est possible de créer et configurer un équipement soi-même mais le plus simple est de créer un équipement "vide" puis de le lier au switch qui sera assisté.
 
-## Création automatique
+## 2.1 Création automatique
 Dans cet exemple, nous allons assister le fonctionnement d'un équipement nommé \[bureau\]\[ZW-lampe\] qui a les actions et infos suivantes:
 
 + **ON**: Action pour allumer la lampe.
@@ -20,7 +20,7 @@ Dans cet exemple, nous allons assister le fonctionnement d'un équipement nommé
 
 ![Equipement ZW-lampe](../images/ZW-lampe.png)
 
-### Création de l'équipement *swassist*
+### 2.1.1 Création de l'équipement *swassist*
 Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur le bouton **ajouter**
 
 ![Gestion des équipements](../images/avant_creation.png)
@@ -33,13 +33,13 @@ Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur l
 
 ![equipement créé](../images/equipement_lampe.png)
 
-### import de l'équipement à assister
+### 2.1.2 import de l'équipement à assister
 
 + Sélectionner le panneau **Commandes**
 ![panneau commandes avant import](../images/commandes_avant_import.png)
 
 + Cliquer sur **Importer un équipement**
-+ Sélection
++ Sélectionner
     + l'équipement à importer
     + La commande qui indique l'état de switch
     + La commande d'enclenchement
@@ -60,7 +60,7 @@ On voit que:
 * Les comandes d'enclencement et de déclenchement seront répétée au maximum 5 fois toutes les 3 secondes.
 * La valeur des options des commandes ont été reprises des comandes liées.
 
-### L'équipement créé dans le dashboard
+### 2.1.3. L'équipement créé dans le dashboard
 
 ![dashboard](../images/dashboard.png)
 
@@ -68,11 +68,11 @@ On voit dans le dashboard que les définition des widgets ont été reprises de 
 
 Un click sur l'icône de l'ampoule de l'équipement swassist provoquera l'extinction ou l'allumage de l'équipement assisté. On peut donc rendre l'équipement assisté invisible et l'on utilisera uniquement l'équipement swassist et ses commandes pourront également être utilisées dans les alertes et scénarios à la place des commandes de l'équipement assisté.
 
-## Création manuelle
+## 2.2. Création manuelle
 
 A titre d'exemple, nous allons créer manuellement un équipement swassist identique à celui qui a été créé automatiquemen ci-dessus.
 
-### Création de l'équipement *swassist*
+### 2.2.1. Création de l'équipement *swassist*
 Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur le bouton **ajouter**
 
 ![Gestion des équipements](../images/avant_creation.png)
@@ -85,7 +85,7 @@ Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur l
 
 ![equipement créé](../images/equipement_lampe.png)
 
-### Ajout de la commande info pour le retour de l'état de la lampe
+### 2.2.2. Ajout de la commande info pour le retour de l'état de la lampe
 
 + Afficher le panneau **Commandes**.
 + Cliquer sur le bouton **Ajouter une info**.
@@ -94,7 +94,7 @@ Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur l
 + Saisir ou sélectionner (en cliquant sur l'icône à droite de champ de saisie) la commande liée.
 + Cliquer sur sauvegarder.
 
-### Ajout de la commande d'allumage
+### 2.2.3. Ajout de la commande d'allumage
 
 + Cliquer sur le bouton **Ajouter une commande**.
 + Saisir le nom de la commande (*ON* dans notre exemple).
@@ -104,7 +104,7 @@ Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur l
 + Saisir le nomde de répétitions maximum et l'intervale entre ces répétitions. 
 + Cliquer sur sauvegarder.
 
-### Ajout de la commande d'extinction
+### 2.2.4. Ajout de la commande d'extinction
 
 + Cliquer sur le bouton **Ajouter une commande**.
 + Saisir le nom de la commande (*OFF* dans notre exemple).
@@ -114,7 +114,7 @@ Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur l
 + Saisir le nomde de répétitions maximum et l'intervale entre ces répétitions.
 + Cliquer sur sauvegarder.
 
-### Ajout des commande de puissance et consommation
+### 2.2.5. Ajout des commande de puissance et consommation
 
 Ces commandes sont optionnelles
 
