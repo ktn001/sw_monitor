@@ -114,7 +114,7 @@ Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur l
 + Saisir le nomde de répétitions maximum et l'intervale entre ces répétitions.
 + Cliquer sur sauvegarder.
 
-### 2.2.5. Ajout des commande de puissance et consommation
+### 2.2.5. Ajout des commandes de puissance et consommation
 
 Ces commandes sont optionnelles
 
