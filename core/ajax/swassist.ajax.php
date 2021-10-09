@@ -39,7 +39,8 @@ try {
 		$cmdEtat = init('cmdEtat');
 		$cmdOn = init('cmdOn');
 		$cmdOff = init('cmdOff');
-		$swassist->importEqLogic( $eqLogicToImportId, $cmdEtat, $cmdOn, $cmdOff );
+		$CreerTentatives = init('CreerTentatives');
+		$swassist->importEqLogic( $eqLogicToImportId, $cmdEtat, $cmdOn, $cmdOff, $CreerTentatives );
 
 		ajax::success();
 	}

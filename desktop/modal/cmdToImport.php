@@ -49,6 +49,10 @@ if (!isConnect()) {
       <label class="control-label col-sm-6">{{Commande HORS}} :</label>
       <div id="mod_eqLogicToImport_cmdOff"></div>
     </div>
+    <div class="form-group">
+      <label class="control-label col-sm-6">{{Créer}} :</label>
+      <label class="checkbox-inline"><input type="checkbox" id="mod_eqLogicToImport_tentatives" checked/>{{Compteur de tentatives}}</label>
+    </div>
   </fieldset>
 </form>
 </div>
@@ -133,6 +137,7 @@ if (!isConnect()) {
     retour.cmdEtat = $('#mod_eqLogicToImport_cmdEtat').find('select').first().value()
     retour.cmdOn = $('#mod_eqLogicToImport_cmdOn').find('select').first().value()
     retour.cmdOff = $('#mod_eqLogicToImport_cmdOff').find('select').first().value()
+    retour.CreerCmdTentatives = $('#mod_eqLogicToImport_tentatives').first().value()
     return (retour)
   }
 

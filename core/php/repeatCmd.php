@@ -40,7 +40,7 @@ _log('debug',__('Commande ID : ', __FILE__) . $options['i']);
 
 /* Création de l'instance de l'objet cmd 'action' */
 /* ********************************************** */
-$cmd = cmd::byId($options["i"]);
+$cmd = swassistCmd::byId($options["i"]);
 if (! is_object($cmd) ) {
 	_log("error",__("Il n'existe pas de commande avec l'id ",__FILE__) . $options['i'] );
 	exit (1);
@@ -55,7 +55,7 @@ if ($cmd->getEqType() != "swassist") {
 $delai = $cmd->getDelai();
 $repetitionMax = $cmd->getRepetition();
 $valeurCible = $cmd->getTargetValue();
-_log("debug",__("Délai entre reépétitions: ", __FILE__) . $delai);
+_log("debug",__("Délai entre répétitions: ", __FILE__) . $delai);
 _log("debug",__("Nombre max de répétitions: ", __FILE__) . $repetitionMax);
 _log("debug",__("Valeur cible: ", __FILE__) . $valeurCible);
 
@@ -68,7 +68,7 @@ if (! is_object($cmdRetour)){
 }
 
 sleep ($delai);
-$count=0;
+$count=1;
 while ($cmdRetour->getWaiting() == $valeurCible) {
 	_log("info", __("Relance de la commande ", __FILE__) . $cmd->getHumanName()); 
 	$cmd->retry();
@@ -80,8 +80,14 @@ while ($cmdRetour->getWaiting() == $valeurCible) {
 }
 if ($cmdRetour->getWaiting() == $valeurCible) {
 	_log('alert', __("La commande a échoué", __FILE__));
+	$count = -$count;
 } else {
-	_log('info', sprintf(__("Commande exécutée après %d répétitions", __FILE__), $count));
+	_log('info', sprintf(__("Commande exécutée après %d tentatives", __FILE__), $count));
+}
+$swassist = $cmd->geteqLogic();
+$nbTentativesCmd = swassistCmd::byEqLogicIdAndLogicalId($swassist->getId(),"nbTentatives");
+if ( is_object($nbTentativesCmd)) {
+    $swassist->checkAndUpdateCmd($nbTentativesCmd,$count);
 }
 
 exit (0);
