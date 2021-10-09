@@ -44,6 +44,7 @@ Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur l
     + La commande qui indique l'état de switch
     + La commande d'enclenchement
     + La commande de déclenchment 
+    + Sélectioner *Créer compteur de tentatives* si l'on désire avoir une info qui indique combien de fois la commande à du être envoyée pour le dernier enclenchement ou déclenchement.
 
 ![selection de l'équipement à importer](../images/selection_commandes.png)
 
