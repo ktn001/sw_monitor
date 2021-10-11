@@ -23,6 +23,13 @@ Trois commandes sont nécessaires au fonctionnement d'un équipement swassist. U
 
 ## 1.2. Info pour le comptage de répétitions
 
+Une commande *info* peut être créée en cliquant sur le bouton **+ Nb tentavives** dans le panneau *Commande* ou en sélectionnant *Créer Compreur de tentatives* lors de l'importation d'un équipement à assister.
+
+Cette info contient indique le nombre de tentatives qui ont été effectuée lors du dernier enclenchement/déclenchement de l'équipement. Cette valeurs sera négative si le l'enclenchement ou le déclenchement à échoué. L'info contindra donc la valeur
++ 1 : Si La commande àa été effecutée du premier coup et qu'aucune répétition n'a été nécessaires.
++ 3 : S'il y a eu des problèmes lors de l'éxécution de la commande et qu'il a fallut relancer la commande à deux reprises.
++ -6 : S'il l'équipement n'as pas pu être enclenché ou déclenché malgré 6 répétitions.
+
 # 2. Configuration du plugin
 Le plugin ne nécessite aucune configuration, il faut juste l’activer.
 
@@ -71,7 +78,7 @@ Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur l
 ![selection de l'équipement à importer](../images/selection_commandes.png)
 
 + Cliquer sur *valider*
-+ Resélectionner le panneau *Comandes* pour voir les commandes importées
++ Resélectionner le panneau *Commandes* pour voir les commandes importées
 
 ![Les commandes importées](../images/commandes_apres_import.png)
 
