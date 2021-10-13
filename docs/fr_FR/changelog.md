@@ -4,7 +4,7 @@
 
 Pour rappel s’il n’y a pas d’information sur la mise à jour, c’est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
-## v1.1.0 - beta  (11/10/21)
+## v1.1.0  (13/10/21)
 Ajout de l'info **Nb Tentatives**
 
 ## V1.0.0 (21/09/21)
