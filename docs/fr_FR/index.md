@@ -25,7 +25,7 @@ Trois commandes sont nécessaires au fonctionnement d'un équipement swassist. U
 
 Une commande *info* peut être créée en cliquant sur le bouton **+ Nb tentavives** dans le panneau *Commande* ou en sélectionnant *Créer Compreur de tentatives* lors de l'importation d'un équipement à assister.
 
-Cette info contient indique le nombre de tentatives qui ont été effectuée lors du dernier enclenchement/déclenchement de l'équipement. Cette valeurs sera négative si le l'enclenchement ou le déclenchement à échoué. L'info contindra donc la valeur
+Cette info contient indique le nombre de tentatives qui ont été effectuées lors du dernier enclenchement/déclenchement de l'équipement. Cette valeur sera négative si l'enclenchement ou le déclenchement a échoué. L'info contiendra donc la valeur
 + 1 : Si La commande àa été effecutée du premier coup et qu'aucune répétition n'a été nécessaires.
 + 3 : S'il y a eu des problèmes lors de l'éxécution de la commande et qu'il a fallut relancer la commande à deux reprises.
 + -6 : S'il l'équipement n'as pas pu être enclenché ou déclenché malgré 6 répétitions.
