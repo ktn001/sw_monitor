@@ -247,17 +247,19 @@ class swassistCmd extends cmd {
         }
         if ($this->getType() == 'info') {
             try {
+	        log::add("swassist","debug","Réception d'une info " . $this->getHumanName());
                 $result = jeedom::evaluateExpression($this->getConfiguration('cmdLiee'));
                 if ($result == $this->getWaiting()) {
                     $this->setCache('waiting', '');
                 }
                 return $result;
             } catch (Exception $e) {
-                log::add('swassist', 'info', $e->getMessages());
+                log::add('swassist', 'error', $e->getMessages());
                 return $this->getConfiguration('cmdLiee');
             }
         }
         if ($this->getType() == 'action') {
+	    log::add("swassist","debug", "Traitement d'une commande '" . $this->getHumanName() . "'..."); 
             $cmdRetour = $this->getCmdRetour();
             if (is_object($cmdRetour)) {
                 $cmdRetour->setWaiting($this->getConfiguration('targetValue'));
@@ -268,6 +270,7 @@ class swassistCmd extends cmd {
             }
             $return = $cmdLiee->execCmd($_options);
             $cmd = __DIR__ . "/../php/repeatCmd.php -i " . $this->getId();
+	    log::add("swassist","debug","Lancement de '" . $cmd . "'");
             system::php($cmd . ' >> ' . log::getPathToLog('swassist') . ' 2>&1 &');
             return $return;
         }
@@ -284,7 +287,6 @@ class swassistCmd extends cmd {
         if (! is_object($cmd)) {
             log::add("swassist","error", sprintf (__("commande %s introuvable", __FILE__),$cmdLiee_id));
         }
-        log::add("swassist","debug", $cmd->getHumanName());
         return $cmd;
     }
 

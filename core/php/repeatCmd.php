@@ -20,7 +20,7 @@ require_once __DIR__ . '/../../../../core/php/core.inc.php';
 require_once __DIR__ . '/../class/swassist.class.php';
 
 function  _log ($level, $msg) {
-	log::add('swassist', $level, 'repeatCmd [' . getmypid() . '] ' . $msg);
+	log::add('swassist', $level, '[repeatCmd] [' . getmypid() . '] ' . $msg);
 }
 
 _log("debug", __("Lancement de ",__FILE__) . __FILE__ );
