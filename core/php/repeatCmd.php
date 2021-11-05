@@ -82,7 +82,7 @@ if ($cmdRetour->getWaiting() == $valeurCible) {
 	_log('alert', __("La commande a échoué", __FILE__));
 	$count = -$count;
 } else {
-	_log('info', sprintf(__("Commande exécutée après %d tentatives", __FILE__), $count));
+	_log('info', sprintf(__("Commande %s exécutée après %d tentative(s)", __FILE__), $cmd->getHumanName(), $count));
 }
 $swassist = $cmd->geteqLogic();
 $nbTentativesCmd = swassistCmd::byEqLogicIdAndLogicalId($swassist->getId(),"nbTentatives");

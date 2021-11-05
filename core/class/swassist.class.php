@@ -233,9 +233,12 @@ class swassistCmd extends cmd {
             return;
         }
         $cmdLiee = $this->getCmdLiee();
-        if ($this->getCmdRetour()->getWaiting() == $cmdLiee->execCmd()) {
+	$cmdRetour = $this->getCmdRetour();
+        if ($cmdRetour->getWaiting() == $cmdRetour->execCmd()) {
             $this->setCache('waiting','');
+	    return;
         }
+	log::add("swassist","debug","Réexecution de " . $cmdLiee->getHumanName());
         $cmdLiee->execCmd();
     }
 
