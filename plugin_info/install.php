@@ -38,7 +38,7 @@ function swassist_update() {
 			log::add("swassist","info",__("  Upgrade de la commande ",__FILE__) . $cmd->getHumanName());
 			if ($cmd->getIsHistorized() != "1") {
 				log::add("swassist","info",__("    Activation de l'historisation.",__FILE__));
-				$cmd->setIsHistorized(1);
+				$cmd->setIsHistorized("1");
 			}
 			if ($cmd->getConfiguration('historizeMode', "avg") == 'avg'){
 				log::add("swassist","info",__("    Modification du lissage.",__FILE__));
