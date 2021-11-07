@@ -40,7 +40,7 @@ class swassist extends eqLogic {
 
     /*     * *********************Méthodes d'instance************************* */
 
-    public function importEqLogic($eqLogicToImport_Id, $cmdEtatToImport_Id = -1, $cmdOnToImport_Id = -1, $cmdOffToImport_Id = -1, $creerTentatives = "") {
+    public function importEqLogic($eqLogicToImport_Id, $cmdEtatToImport_Id = -1, $cmdOnToImport_Id = -1, $cmdOffToImport_Id = -1, $creerTentatives = "", $creerStatut = "") {
         $eqLogicToImport = eqLogic::byId($eqLogicToImport_Id);
         if (!is_object($eqLogicToImport)) {
             throw new Exception(__("Equipement introuvable : " ,__FILE__) . $eqLogicToImport_Id);
@@ -120,6 +120,21 @@ class swassist extends eqLogic {
 	    $cmd->setIsHistorized(1);
             $cmd->save();
 	}
+	if ($creerStatut == 1) {
+	    log::add("swassist","debug","Création de la commande de statut");
+            $cmd = new swassistCmd();
+            $cmd->setEqLogic_id($this->getId());
+	    $cmd->setName("Status");
+	    $cmd->setLogicalId("statut");
+	    $cmd->setType("info");
+	    $cmd->setSubType("numeric");
+            $cmd->setOrder($order);
+	    $order += 1;
+	    $cmd->setTemplate("dashboard","tile");
+	    $cmd->setTemplate("mobile","tile");
+	    $cmd->setIsHistorized(1);
+            $cmd->save();
+	}
         $this->refresh();
     }
  
@@ -178,10 +193,17 @@ class swassistCmd extends cmd {
 	    $this->setConfiguration('historizeMode','none');
             return;
         }
+        if ($this->getLogicalId() == "statut") {
+	    $this->setTemplate("dashboard","tile");
+	    $this->setTemplate("mobile","tile");
+	    $this->setDisplay('graphType', 'column');
+	    $this->setConfiguration('historizeMode','none');
+            return;
+        }
         $cmdLiee_id = str_replace("#", "",$this->getConfiguration('cmdLiee'));
         $cmdLiee = cmd::byId($cmdLiee_id);
         if ( ! is_object($cmdLiee)) {
-            throw new Exception (sprintf (__("Commande %s: commande liee introuvable",__FILE__),$name));
+            throw new Exception (sprintf (__("11 Commande %s: commande liee introuvable",__FILE__),$this->getName()));
         }
         $this->setSubType($cmdLiee->getSubType());
         $this->setIsVisible($cmdLiee->getIsVisible());
@@ -207,11 +229,14 @@ class swassistCmd extends cmd {
         if ($this->getLogicalId() == "nbTentatives") {
             return;
         }
+        if ($this->getLogicalId() == "statut") {
+            return;
+        }
         $name = trim ($this->getName());
         $cmdLiee_id = str_replace("#", "",$this->getConfiguration('cmdLiee'));
         $cmdLiee = cmd::byId($cmdLiee_id);
         if ( ! is_object($cmdLiee)) {
-            throw new Exception (sprintf (__("Commande %s: commande liee introuvable",__FILE__),$name));
+            throw new Exception (sprintf (__("22 Commande %s: commande liee introuvable",__FILE__),$name));
         }
         if ($this->getType() == 'info') {
             $this->setValue($cmdLiee_id);
@@ -278,6 +303,10 @@ class swassistCmd extends cmd {
 	    $nbTentativesCmd = swassistCmd::byEqLogicIdAndLogicalId($swassist->getId(),"nbTentatives");
 	    if (is_object($nbTentativesCmd)) {
 		    $swassist->checkAndUpdateCmd($nbTentativesCmd,0);
+	    }
+	    $statutCmd = swassistCmd::byEqLogicIdAndLogicalId($swassist->getId(),"statut");
+	    if (is_object($statutCmd)) {
+		    $swassist->checkAndUpdateCmd($statutCmd,0);
 	    }
             $return = $cmdLiee->execCmd($_options);
             $cmd = __DIR__ . "/../php/repeatCmd.php -i " . $this->getId();

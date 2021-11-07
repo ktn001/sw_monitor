@@ -40,6 +40,7 @@ try {
 		$cmdOn = init('cmdOn');
 		$cmdOff = init('cmdOff');
 		$CreerTentatives = init('CreerTentatives');
+		$CreerStatus = init('CreerStatut');
 		$swassist->importEqLogic( $eqLogicToImportId, $cmdEtat, $cmdOn, $cmdOff, $CreerTentatives );
 
 		ajax::success();
