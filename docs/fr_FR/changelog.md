@@ -4,7 +4,7 @@
 
 Pour rappel s’il n’y a pas d’information sur la mise à jour, c’est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
-## v1.3.0 (???????)
+## v1.3.0 (7/11/21 - alpha)
 + Le nombre de répétitions est historisé par défaut et le mode de lissage est mis à "aucun".
 + Le graphique mode de l'historique passé à "barre"
 
