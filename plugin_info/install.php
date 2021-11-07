@@ -29,7 +29,7 @@ function swassist_update() {
 	log::add("swassist","info",__("Mise à niveau du plugin",__FILE__));
 	if ($updateState == 0) {
 		log::add("swassist","info",__("Upgrade depuis état 0",__FILE__));
-		$cmds = cmd::byLogicalId('swassist','nbTentatives',true);
+		$cmds = cmd::byLogicalId('nbTentatives');
 		log::add("swassist","info","XXX " . print_r($cmds,true));
 		foreach ($cmds as $cmd) {
 			if ($cmd->geteqType != 'swassist') {
