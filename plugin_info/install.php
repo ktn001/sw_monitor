@@ -19,17 +19,52 @@
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 // Fonction exécutée automatiquement après l'installation du plugin
-  function template_install() {
+  function swassist_install() {
 
   }
 
 // Fonction exécutée automatiquement après la mise à jour du plugin
-  function template_update() {
+function swassist_update() {
+	$updateState = (int) config::byKey("update::state","swassist", 0);
+	log::add("swassist","info",__("Mise à niveau du plugin",__FILE__));
+	if ($updateState == 0) {
+		log::add("swassist","info",__("Upgrade depuis état 0",__FILE__));
+		$cmds = cmd::byLogicalId('nbTentatives');
+		foreach ($cmds as $cmd) {
+			if ($cmd->getEqType_name() != 'swassist') {
+				continue;
+			}
+			$changed = false;
+			log::add("swassist","info",__("  Upgrade de la commande ",__FILE__) . $cmd->getHumanName());
+			if ($cmd->getIsHistorized() != "1") {
+				log::add("swassist","info",__("    Activation de l'historisation.",__FILE__));
+				$cmd->setIsHistorized("1");
+				$changed = true;
+			}
+			if ($cmd->getConfiguration('historizeMode', "avg") == 'avg'){
+				log::add("swassist","info",__("    Modification du lissage.",__FILE__));
+				$cmd->setConfiguration('historizeMode','none');
+				$changed = true;
+			}
+			if ($cmd->getDisplay('graphType', 'area') == 'area') {
+				log::add("swassist","info",__("    Modification du type de graphique.",__FILE__));
+				$cmd->setDisplay("graphType", "column");
+				$changed = true;
+			}
+			if ($changed){
+				log::add("swassist","info",__("    Sauvegarde des modifications.",__FILE__));
+				$cmd->save();
+			}
+		}
+		$updateState = 1;
+		config::save("update::state",$updateState,"swassist");
+		log::add("swassist","info",__("Upgrade état 1 atteint",__FILE__));
+	}
 
-  }
+}
 
 // Fonction exécutée automatiquement après la suppression du plugin
-  function template_remove() {
+  function swassist_remove() {
 
   }
 
