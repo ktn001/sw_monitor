@@ -117,6 +117,7 @@ class swassist extends eqLogic {
 	    $order += 1;
 	    $cmd->setTemplate("dashboard","tile");
 	    $cmd->setTemplate("mobile","tile");
+	    $cmd->setIsHistorized(1);
             $cmd->save();
 	}
         $this->refresh();
@@ -173,6 +174,8 @@ class swassistCmd extends cmd {
         if ($this->getLogicalId() == "nbTentatives") {
 	    $this->setTemplate("dashboard","tile");
 	    $this->setTemplate("mobile","tile");
+	    $this->setDisplay('graphType', 'column');
+	    $this->setConfiguration('historizeMode','none');
             return;
         }
         $cmdLiee_id = str_replace("#", "",$this->getConfiguration('cmdLiee'));
@@ -271,6 +274,11 @@ class swassistCmd extends cmd {
             if ($cmdLiee == null) {
                 log::add("swassist","error", __("commande Liee introuvable", __FILE__));
             }
+	    $swassist = $this->geteqLogic();
+	    $nbTentativesCmd = swassistCmd::byEqLogicIdAndLogicalId($swassist->getId(),"nbTentatives");
+	    if (is_object($nbTentativesCmd)) {
+		    $swassist->checkAndUpdateCmd($nbTentativesCmd,0);
+	    }
             $return = $cmdLiee->execCmd($_options);
             $cmd = __DIR__ . "/../php/repeatCmd.php -i " . $this->getId();
 	    log::add("swassist","debug","Lancement de '" . $cmd . "'");

@@ -91,7 +91,7 @@ $('#bt_addSwassistAction').on('click', function (event) {
  * Ajout de la commande de comptage de tentatives 
  */
 $('#bt_addNbTry').on('click', function (event) {
-    addCmdToTable({type: 'info',logicalId: 'nbTentatives', name: '{{Nb tentatives}}'});
+    addCmdToTable({type: 'info',logicalId: 'nbTentatives', name: '{{Nb tentatives}}', isHistorized : 1});
     modifyWithoutSave = true;
 });
 
