@@ -26,11 +26,11 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 // Fonction exécutée automatiquement après la mise à jour du plugin
 function swassist_update() {
 	$updateState = config::byKey("update::state","swassist", 0);
-	log::add("update","info",__("Mise à niveau du plugin",__FILE__));
+	log::add("swassit","info",__("Mise à niveau du plugin",__FILE__));
 	if ($updateState == 0) {
 		log::add("swassist","info",__("Upgrade depuis état 0",__FILE__));
 		$cmds = swassistCmd::byEqLogicAndLogicalId('swassist',$nbTentatives,true);
-		foreach ($cmds as cmd) {
+		foreach ($cmds as $cmd) {
 			log::add("swassist","info",__("  Upgrade de la commande ",__FILE__) . $cmd->getHumanName());
 			if ($cmd->getIsHistorized == 1) {
 				log::add("swassist","info",__("    Activation de l'historisation.",__FILE__));
@@ -44,8 +44,7 @@ function swassist_update() {
 				log::add("swassist","info",__("    Modification du type de graphique.",__FILE__));
 				$cmd->setDisplay("graphType", "column");
 			}
-
-
+		}
 		$updateState = 1;
 		config::save("update::state",$updateState,"swassist");
 		log::add("swassist","info",__("Upgrade état 1 atteint",__FILE__));
