@@ -46,7 +46,7 @@ function swassist_update() {
 				$cmd->setConfiguration('historizeMode','none');
 				$changed = true;
 			}
-			if ($cmd->getDisplay('graphType', 'area') == '') {
+			if ($cmd->getDisplay('graphType', 'area') == 'area') {
 				log::add("swassist","info",__("    Modification du type de graphique.",__FILE__));
 				$cmd->setDisplay("graphType", "column");
 				$changed = true;
