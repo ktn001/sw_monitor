@@ -32,7 +32,7 @@ function swassist_update() {
 		$cmds = cmd::byLogicalId('nbTentatives');
 		log::add("swassist","info","XXX " . print_r($cmds,true));
 		foreach ($cmds as $cmd) {
-			if ($cmd->geteqType != 'swassist') {
+			if ($cmd->getEqType_name() != 'swassist') {
 				continue;
 			}
 			log::add("swassist","info",__("  Upgrade de la commande ",__FILE__) . $cmd->getHumanName());
