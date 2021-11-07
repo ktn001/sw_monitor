@@ -30,7 +30,7 @@ function swassist_update() {
 	if ($updateState == 0) {
 		log::add("swassist","info",__("Upgrade depuis état 0",__FILE__));
 		$cmds = cmd::byEqLogicAndLogicalId('swassist','nbTentatives',true);
-		log::add("swassist","info",print_r($cmds,true));
+		log::add("swassist","info","XXX " + print_r($cmds,true));
 		foreach ($cmds as $cmd) {
 			log::add("swassist","info",__("  Upgrade de la commande ",__FILE__) . $cmd->getHumanName());
 			if ($cmd->getIsHistorized == 1) {
