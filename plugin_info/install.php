@@ -30,7 +30,6 @@ function swassist_update() {
 	if ($updateState == 0) {
 		log::add("swassist","info",__("Upgrade depuis état 0",__FILE__));
 		$cmds = cmd::byLogicalId('nbTentatives');
-		log::add("swassist","info","XXX " . print_r($cmds,true));
 		foreach ($cmds as $cmd) {
 			if ($cmd->getEqType_name() != 'swassist') {
 				continue;
