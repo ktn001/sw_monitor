@@ -36,15 +36,15 @@ function swassist_update() {
 				continue;
 			}
 			log::add("swassist","info",__("  Upgrade de la commande ",__FILE__) . $cmd->getHumanName());
-			if ($cmd->getIsHistorized == 1) {
+			if ($cmd->getIsHistorized() != 1) {
 				log::add("swassist","info",__("    Activation de l'historisation.",__FILE__));
 				$cmd->setIsHistorized(1);
 			}
-			if ($cmd->getConfiguration('historizeMode') == 'avg'){
+			if ($cmd->getConfiguration('historizeMode', "avg") == 'avg'){
 				log::add("swassist","info",__("    Modification du lissage.",__FILE__));
 				$cmd->setConfiguration('historizeMode','none');
 			}
-			if (($cmd->getDisplay('graphType') == '') or ($cmd->getDisplay('graphType') == 'area')) {
+			if (($cmd->getDisplay('graphType', 'area') == '') {
 				log::add("swassist","info",__("    Modification du type de graphique.",__FILE__));
 				$cmd->setDisplay("graphType", "column");
 			}
