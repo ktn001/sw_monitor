@@ -36,7 +36,7 @@ function swassist_update() {
 				continue;
 			}
 			log::add("swassist","info",__("  Upgrade de la commande ",__FILE__) . $cmd->getHumanName());
-			if ($cmd->getIsHistorized() != 1) {
+			if ($cmd->getIsHistorized() != "1") {
 				log::add("swassist","info",__("    Activation de l'historisation.",__FILE__));
 				$cmd->setIsHistorized(1);
 			}
