@@ -9,11 +9,11 @@ Trois commandes sont nécessaires au fonctionnement d'un équipement swassist. U
 + **L'info**<br>
   Cette commande représente l'état de l'équipement assisté. Cette commande doit avoir le sous-type *Binaire* et être liée à la commande de l'équipement assisté qui indique si cet équipement est enclenché et déclenché.
 + **Les deux actions**<br>
-  Ces deux commandes sont les commandes qui vont enclencher ou déclencher l'équipement assisté. Ces commandes doivent être liées au commandes d'enclenchement et déclenchement de l'équipement assisté.
+  Ces deux commandes sont les commandes qui vont enclencher ou déclencher l'équipement assisté. Ces commandes doivent être liées aux commandes d'enclenchement et déclenchement de l'équipement assisté.
   
   Trois paramètres en définissent le fonctionnment:
   + **Commande**<br>
-    Ce paramètre indique si la commande est la commande d'enclenchement ou de déclenchement de l'équipement assisté. Une commande de type action n'ayant ni la valeur "ON" ni la valur "OFF" ne participera pas à l'assistance
+    Ce paramètre indique si la commande est la commande d'enclenchement ou de déclenchement de l'équipement assisté. Une commande de type action n'ayant ni la valeur "ON" ni la valeur "OFF" ne sera pas assistée.
   + **Répétitions**<br>
     Le nombre maximun de répétions de l'ordre.
   + **Délai**<br>
@@ -23,12 +23,25 @@ Trois commandes sont nécessaires au fonctionnement d'un équipement swassist. U
 
 ## 1.2. Info pour le comptage de répétitions
 
-Une commande *info* peut être créée en cliquant sur le bouton **+ Nb tentavives** dans le panneau *Commande* ou en sélectionnant *Créer Compreur de tentatives* lors de l'importation d'un équipement à assister.
+Une commande *info* peut être créée en cliquant sur le bouton `+ Nb tentatives` dans le panneau *Commandes* ou en sélectionnant `Créer Compteur de tentatives` lors de l'importation d'un équipement à assister.
 
-Cette info contient indique le nombre de tentatives qui ont été effectuées lors du dernier enclenchement/déclenchement de l'équipement. Cette valeur sera négative si l'enclenchement ou le déclenchement a échoué. L'info contiendra donc la valeur
-+ 1 : Si La commande àa été effecutée du premier coup et qu'aucune répétition n'a été nécessaires.
+Cette info indique le nombre de tentatives qui ont été effectuées lors du dernier enclenchement/déclenchement de l'équipement. Cette valeur sera négative si l'enclenchement ou le déclenchement a échoué. L'info contiendra donc la valeur
++ 1 : Si La commande à été effecutée du premier coup et qu'aucune répétition n'a été nécessaires.
 + 3 : S'il y a eu des problèmes lors de l'éxécution de la commande et qu'il a fallut relancer la commande à deux reprises.
 + -6 : S'il l'équipement n'as pas pu être enclenché ou déclenché malgré 6 répétitions.
+
+Par défaut, cette info est visible, historisée sans lissage et le graphique de cet historique est en mode barre
+
+## 1.3. Info sur le statut
+
+Une commande "info" peut être créée en cliquent sur le bouton `+ Statut` dans le panneau *Commandes* ou en sélectionnant `Créer statut` lors de l'importation d'un équipement à assister.
+
+Cette info peut prendre trois valeurs:
++ 0 : Une commande d'enclenchement ou de déclenchement est en cour d'exécution.
++ 1 : La dernière commande d'enclenchement ou de déclenchement a été exécutée correctement (après 0 ou plusieurs répétitions)
++ 2 : La dernière commande d'enclenchement ou de déclenchement a échoué après avoir effectué le nombre maximum de répétitions.
+
+Par défaut, cette info n'est pas visible, historisée sans lissage et le graphique de cet historique est en mode barre
 
 # 2. Configuration du plugin
 Le plugin ne nécessite aucune configuration, il faut juste l’activer.
@@ -50,7 +63,7 @@ Dans cet exemple, nous allons assister le fonctionnement d'un équipement nommé
 ![Equipement ZW-lampe](../images/ZW-lampe.png)
 
 ### 3.1.1 Création de l'équipement *swassist*
-Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur le bouton **ajouter**
+Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur le bouton `ajouter`
 
 ![Gestion des équipements](../images/avant_creation.png)
 
@@ -67,17 +80,18 @@ Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur l
 + Sélectionner le panneau **Commandes**
 ![panneau commandes avant import](../images/commandes_avant_import.png)
 
-+ Cliquer sur **Importer un équipement**
++ Cliquer sur `Importer un équipement`
 + Sélectionner
     + l'équipement à importer
     + La commande qui indique l'état de switch
     + La commande d'enclenchement
     + La commande de déclenchment 
-    + Sélectioner *Créer compteur de tentatives* si l'on désire avoir une info qui indique combien de fois la commande à du être envoyée pour le dernier enclenchement ou déclenchement.
+    + Sélectioner `Créer compteur de tentatives` si l'on désire avoir une info qui indique combien de fois la commande à du être envoyée pour le dernier enclenchement ou déclenchement.
+    + Sélectionner `Créer statut` si l'on désire avoir une info qui indiqe le statut de l'exécution de la dernière commande.
 
 ![selection de l'équipement à importer](../images/selection_commandes.png)
 
-+ Cliquer sur *valider*
++ Cliquer sur `valider`
 + Resélectionner le panneau *Commandes* pour voir les commandes importées
 
 ![Les commandes importées](../images/commandes_apres_import.png)
@@ -119,15 +133,15 @@ Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur l
 ### 3.2.2. Ajout de la commande info pour le retour de l'état de la lampe
 
 + Afficher le panneau **Commandes**.
-+ Cliquer sur le bouton **Ajouter une info**.
++ Cliquer sur le bouton `Ajouter une info`.
 + Saisir le nom de la commande (*Etat* dans notre exemple).
-+ Sélectionner le sous-type "binaire".
++ Sélectionner le sous-type *binaire*.
 + Saisir ou sélectionner (en cliquant sur l'icône à droite de champ de saisie) la commande liée.
 + Cliquer sur sauvegarder.
 
 ### 3.2.3. Ajout de la commande d'allumage
 
-+ Cliquer sur le bouton **Ajouter une commande**.
++ Cliquer sur le bouton `Ajouter une commande`.
 + Saisir le nom de la commande (*ON* dans notre exemple).
 + Sélectionner le nom de la commande de retour d'état (celle que nous avons créé ci-dessus).
 + Saisir ou sélectionner la commande liée (la commande de type action qui allume l'équipement assisté).
@@ -137,7 +151,7 @@ Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur l
 
 ### 3.2.4. Ajout de la commande d'extinction
 
-+ Cliquer sur le bouton **Ajouter une commande**.
++ Cliquer sur le bouton `Ajouter une commande`.
 + Saisir le nom de la commande (*OFF* dans notre exemple).
 + Sélectionner le nom de la commande de retour d'état (celle que nous avons créé ci-dessus).
 + Saisir ou sélectionner la commande liée (la commande de type action qui éteint l'équipement assisté).
@@ -149,7 +163,7 @@ Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur l
 
 Ces commandes sont optionnelles.
 
-+ Cliquer sur le bouton **Ajouter une info**.
++ Cliquer sur le bouton `Ajouter une info`.
 + Saisir le nom de la commande (*puissance* ou *consommation* dans notre exemple).
 + Sélectionner le sous-type qui doit être le même celui de la commande liéée.
 + Saisir les options de la commande (on reprend généralement les option de la commande liée).
@@ -159,4 +173,10 @@ Ces commandes sont optionnelles.
 
 Cette commande est optionnelle.
 
-+ Cliquer sur le bouton **+ Nb tentatives**
++ Cliquer sur le bouton `+ Nb tentatives`
+
+### 3.2.6. Ajout de l'info du statut
+
+Cette commande est optionnelle.
+
++ Cliquer sur le bouton `+ Statut`
