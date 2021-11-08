@@ -118,6 +118,7 @@ class swassist extends eqLogic {
 	    $cmd->setTemplate("dashboard","tile");
 	    $cmd->setTemplate("mobile","tile");
 	    $cmd->setIsHistorized(1);
+	    $cmd->setIsVisible(1);
             $cmd->save();
 	}
 	if ($creerStatut == 1) {
@@ -133,6 +134,7 @@ class swassist extends eqLogic {
 	    $cmd->setTemplate("dashboard","tile");
 	    $cmd->setTemplate("mobile","tile");
 	    $cmd->setIsHistorized(1);
+	    $cmd->setIsVisible(0);
             $cmd->save();
 	}
         $this->refresh();
