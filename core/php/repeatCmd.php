@@ -81,13 +81,19 @@ while ($cmdRetour->getWaiting() == $valeurCible) {
 if ($cmdRetour->getWaiting() == $valeurCible) {
 	_log('alert', __("La commande a échoué", __FILE__));
 	$count = -$count;
+	$statut = 2;
 } else {
 	_log('info', sprintf(__("Commande %s exécutée après %d tentative(s)", __FILE__), $cmd->getHumanName(), $count));
+	$statut = 1;
 }
 $swassist = $cmd->geteqLogic();
 $nbTentativesCmd = swassistCmd::byEqLogicIdAndLogicalId($swassist->getId(),"nbTentatives");
 if ( is_object($nbTentativesCmd)) {
     $swassist->checkAndUpdateCmd($nbTentativesCmd,$count);
+}
+$statutCmd = swassistCmd::byEqLogicIdAndLogicalId($swassist->getId(),"statut");
+if ( is_object($statutCmd)) {
+    $swassist->checkAndUpdateCmd($statutCmd,$statut);
 }
 
 exit (0);

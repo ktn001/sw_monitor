@@ -141,7 +141,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     <a class="btn btn-default btn-sm cmdAction" id="bt_addSwassistInfo"><i class="fas fa-plus-circle"></i> {{Ajouter une info}}</a>
                     <a class="btn btn-default btn-sm cmdAction" id="bt_addSwassistAction"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
                     <a class="btn btn-default btn-sm cmdAction" id="bt_addNbTry"><i class="fas fa-plus-circle"></i> {{Nb tentatives}}</a>
-                    <a class="btn btn-default btn-sm cmdAction roundedRight" id="bt_addStatusCmd"><i class="fas fa-plus-circle"></i> {{Ajouter le statut}}</a>
+                    <a class="btn btn-default btn-sm cmdAction roundedRight" id="bt_addStatutCmd"><i class="fas fa-plus-circle"></i> {{Statut}}</a>
                 </div>
                 <br/><br/>
                 <div class="table-responsive">

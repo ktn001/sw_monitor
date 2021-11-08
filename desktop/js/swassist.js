@@ -46,7 +46,8 @@ $('#bt_importEqLogic').off('click').on('click',function () {
 		    cmdEtat: retour.cmdEtat,
 		    cmdOn: retour.cmdOn,
 		    cmdOff: retour.cmdOff,
-		    CreerTentatives: retour.CreerCmdTentatives
+		    CreerTentatives: retour.CreerCmdTentatives,
+		    CreerStatut: retour.CreerCmdStatut,
 		},
 		dataType: 'json',
 		global: false,
@@ -91,12 +92,12 @@ $('#bt_addSwassistAction').on('click', function (event) {
  * Ajout de la commande de comptage de tentatives 
  */
 $('#bt_addNbTry').on('click', function (event) {
-    addCmdToTable({type: 'info',logicalId: 'nbTentatives', name: '{{Nb tentatives}}', isHistorized : 1});
+    addCmdToTable({type: 'info',logicalId: 'nbTentatives', name: '{{Nb tentatives}}', 'isVisible': 1, 'isHistorized' : 1});
     modifyWithoutSave = true;
 });
 
 /*
- * Réactivation des bouton d'ajout en cas de suppression de nbTentative
+ * Réactivation du bouton d'ajout en cas de suppression de nbTentative
  */
 $('#div_pageContainer').on('click', '.cmd .cmdAction[data-action=remove]', function() {
     logicalId =  $(this).closest('tr').find('.cmdAttr[data-l1key=logicalId]').value();
@@ -104,6 +105,25 @@ $('#div_pageContainer').on('click', '.cmd .cmdAction[data-action=remove]', funct
 	$('#bt_addNbTry').removeClass('disabled');
     }
 });
+
+/*
+ * Ajout de la commande de Statut
+ */
+$('#bt_addStatutCmd').on('click', function (event) {
+    addCmdToTable({type: 'info',logicalId: 'statut', name: '{{Statut}}', isHistorized : 1});
+    modifyWithoutSave = true;
+});
+
+/*
+ * Réactivation du bouton d'ajout en cas de suppression de la commande de statut
+ */
+$('#div_pageContainer').on('click', '.cmd .cmdAction[data-action=remove]', function() {
+    logicalId =  $(this).closest('tr').find('.cmdAttr[data-l1key=logicalId]').value();
+    if (logicalId == "statut") {
+	$('#bt_addStatutCmd').removeClass('disabled');
+    }
+});
+
 /*
  * Choix d'une info à lier
  */
@@ -206,7 +226,37 @@ function addCmdToTable(_cmd) {
 	    tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="minValue" placeholder="{{Min}}" title="{{Min}}" style="width:30%;display:inline-block;">';
 	    tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="maxValue" placeholder="{{Max}}" title="{{Max}}" style="width:30%;display:inline-block;">';
 	    tr += '<br>';
-	    tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></span> ';
+	    tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible"/>{{Afficher}}</label></span> ';
+	    tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isHistorized"/>{{Historiser}}</label></span> ';
+	    tr += '</td>';
+	    tr += '<td>';
+	    if (is_numeric(_cmd.id)) {
+		tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fas fa-cogs"></i></a> ';
+		tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fas fa-rss"></i> {{Tester}}</a>';
+	    }
+	    tr += '<i class="fas fa-minus-circle pull-right cmdAction cursor" data-action="remove"/>';
+	    tr += '</td>';
+	    tr += '</tr>';
+	    $('#table_cmd tbody').append(tr);
+	    $('#table_cmd tbody tr').last().setValues(_cmd, '.cmdAttr');
+	} else if (init(_cmd.logicalId) == "statut") {
+	    $('#bt_addStatutCmd').addClass('disabled');
+	    var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">';
+	    tr += '<td>';
+	    tr += '<span class="cmdAttr" data-l1key="id"></span>';
+	    tr += '<span class="cmdAttr" data-l1key="logicalId" style="display: none"></span>';
+	    tr += '</td>';
+	    tr += '<td>';
+	    tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width: 140px;" placeholder="{{Nom}}"/>';
+	    tr += '</td>';
+	    tr += '<td>';
+	    tr += '<input class="cmdAttr form-control type input-sm" data-l1key="type" value="info" disabled style="margin-bottom : 5px;"/>';
+	    tr += '<input class="cmdAttr form-control type input-sm" data-l1key="subType" value="numeric" disabled style="margin-bottom : 5px;"/>';
+	    tr += '</td>';
+	    tr += '<td/>';
+	    tr += '<td/>';
+	    tr += '<td>';
+	    tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible">{{Afficher}}</label></span> ';
 	    tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isHistorized"/>{{Historiser}}</label></span> ';
 	    tr += '</td>';
 	    tr += '<td>';
