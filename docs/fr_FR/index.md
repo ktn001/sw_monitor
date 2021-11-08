@@ -98,12 +98,13 @@ Ouvrir la page de gestion des équipements du plugin *swassist* et cliquer sur l
 
 On voit que:
 * Une commande liée a été créée pour chaque commande de l'équipement assisté.
-* La commande 1159 est la commande d'enclechement.
-* La commande 1160 est la commande de déclenchement.
+* La commande 1406 est la commande d'enclechement.
+* La commande 1407 est la commande de déclenchement.
 * Etat est l'info de retour pour les commande d'enclenchement et de déclenchement.
 * Les comandes d'enclencement et de déclenchement seront répétée au maximum 5 fois toutes les 3 secondes.
 * La valeur des options des commandes ont été reprises des comandes liées.
-* La commande 1164 qui contiendra le d'envois de la commande lors du dernier enclanchement/déclenchement a été créée
+* La commande 1410 contiendra le nombre d'envois de la commande lors du dernier enclenchement/déclenchement a été créée.
+* La commande 1411 contiendra le statut de la dernière commande.
 
 ### 3.1.3. L'équipement créé dans le dashboard
 
