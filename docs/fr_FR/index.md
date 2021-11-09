@@ -1,4 +1,7 @@
 # ![icon](../images/swassist_icon.png) Plugin "Switch Assistant" pour Jeedom
+
+[changelog](changelog.md)
+
 Le plugin **swassit** permet d'envoyer un ordre d'enclenchement ou de déclenchemenet à un équipement. L'ordre sera ensuite automatiquement répété jusqu'à ce que l'on a un retour confirmant que l'ordre a bien été exécuté.
 
 # 1. Fonctionnement du plugin
@@ -30,7 +33,9 @@ Cette info indique le nombre de tentatives qui ont été effectuées lors du der
 + 3 : S'il y a eu des problèmes lors de l'éxécution de la commande et qu'il a fallut relancer la commande à deux reprises.
 + -6 : S'il l'équipement n'as pas pu être enclenché ou déclenché malgré 6 répétitions.
 
-Par défaut, cette info est visible, historisée sans lissage et le graphique de cet historique est en mode barre
+Par défaut, cette info est visible, historisée sans lissage et le graphique de cet historique est en mode barre.
+
+![Graphique de l'historique du nombre de répétitions](../images/graph_nb_repetitions.png)
 
 ## 1.3. Info sur le statut
 
