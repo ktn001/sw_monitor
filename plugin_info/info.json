@@ -11,8 +11,8 @@
 	"hasDependency" : false,
 	"hasOwnDeamon" : false,
 	"maxDependancyInstallTime" : 0,
-	"changelog" : "https://ktn001.github.io/swassist/#language#/changelog",
-	"documentation" : "https://ktn001.github.io/swassist/#langage#/index.html",
+	"changelog" : "https://ktn001.github.io/#language#/swassist/changelog",
+	"documentation" : "https://ktn001.github.io/#langage#/swassist/index.html",
 	"language" : ["fr_FR"],
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile","v4"]
 }
