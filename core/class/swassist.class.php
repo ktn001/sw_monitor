@@ -96,12 +96,12 @@ class swassist extends eqLogic {
         if ($cmdEtat_Id >= 0) {
             if ($cmdOn_Id >= 0) {
                 $cmd = swassistCmd::byId($cmdOn_Id);
-                $cmd->setValue($cmdEtat_Id);
+                $cmd->setValue("#" . $cmdEtat_Id . "#");
                 $cmd->save();
             }
             if ($cmdOff_Id >= 0) {
                 $cmd = swassistCmd::byId($cmdOff_Id);
-                $cmd->setValue($cmdEtat_Id);
+                $cmd->setValue("#" . $cmdEtat_Id . "#");
                 $cmd->save();
             }
         }
@@ -241,7 +241,7 @@ class swassistCmd extends cmd {
             throw new Exception (sprintf (__("22 Commande %s: commande liee introuvable",__FILE__),$name));
         }
         if ($this->getType() == 'info') {
-            $this->setValue($cmdLiee_id);
+            $this->setValue("#" . $cmdLiee_id . "#");
         }
     }
 
